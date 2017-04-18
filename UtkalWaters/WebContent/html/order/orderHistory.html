@@ -1,0 +1,199 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+</head>
+
+<body>
+
+<br>
+<div ng-controller="orderHistoryController" >
+
+<fieldset class="scheduler-border col-sm-11" >
+    <legend class="scheduler-border">Customer Order History</legend>
+
+
+
+<form class="form-horizontal" ><!--  ng-submit="orderHistory()"> -->
+
+
+<div class="form-group" >
+      <label class="control-label col-sm-2 col-sm-offset-2" for="customerName">Select Customer :</label>
+      <div class="col-sm-4">
+    <!--   <select ng-change="onCustomerNameChange()"  style="height: 30px;"  id="customerName" class="form-control"  ng-model="names.key"  ng-options="key as value for (key,value) in names">
+      </select> -->
+      <input type="text" ng-model="selectedCustomer"  class="form-control"  style="height: 30px;"
+    uib-typeahead="customer.customerId as customer.customerName for customer in customers | 
+    filter:$viewValue | limitTo:8" 
+    typeahead-input-formatter="formatLabel($model)" >
+      
+      </div>
+      </div>
+
+
+
+<div class="form-group" id="dateDiv" style="display:none">
+      <label class="control-label col-sm-2 col-sm-offset-1">Start Date :</label>
+      <div class="col-sm-2">
+        <div class="row">
+        <p class="input-group" style="margin-top: -4px">
+          <input  type="text" class="form-control" uib-datepicker-popup="{{format}}" ng-model="orderHistoryObject.startDate" 
+          is-open="popup1.opened" datepicker-options="dateOptions" ng-required="true" close-text="Close" style="width: 158px" />
+          <span class="input-group-btn">
+            <button type="button" class="customButton btn" ng-click="openCalender()" style="height: 25px;width: 35px"><i class="glyphicon glyphicon-calendar"></i></button>
+          </span>
+        </p>
+      </div> 
+      </div> 
+    <!-- </div> -->
+    
+  <!--   <div class="form-group" id="dateDiv" style="display:block"> -->
+      <label class="control-label col-sm-2 " >End Date :</label>
+      <div class="col-sm-2">
+        <div class="row">
+        <p class="input-group" style="margin-top: -4px">
+          <input  type="text" class="form-control" uib-datepicker-popup="{{format}}" ng-model="orderHistoryObject.endDate" 
+          is-open="popup2.opened" datepicker-options="dateOptions" ng-required="true" close-text="Close" style="width: 158px" />
+          <span class="input-group-btn">
+            <button type="button" class="customButton btn" ng-click="openCalender2()" style="height: 25px;width: 35px"><i class="glyphicon glyphicon-calendar"></i></button>
+          </span>
+        </p>
+      </div> 
+      </div> 
+    </div>
+    
+    <button  id="btnDiv" ng-click="showOrderHistory()" class="customButton btn" style="display: none">Get Order History</button>
+    </form>
+    
+    
+    <br>
+    
+    <div class="form-horizontal" id="orderHistoryResultTable" style="display: none">
+    
+    <!-- Normal Jar Details -->
+    
+  <div class="form-group" id="nothing"  style="display:block">
+  <label class="control-label col-sm-2 " >Total Normal Jar Ordered :</label>
+  <div class="col-sm-2">
+  {{normalJarOrdered}}</div>
+  
+    
+   <label class="control-label col-sm-2 " >Total Normal Jar Returned Empty :</label>
+  <div class="col-sm-2">
+  {{normalJarReturned}}</div>
+   
+   <label class="control-label col-sm-2 " >Total Normal Jar Returned Filled :</label>
+  <div class="col-sm-2">
+  {{normalWaterReturnedFilled}}</div>
+  
+  
+   
+   </div>
+   
+   
+   
+   
+   
+   <!-- Cold Jar Details -->
+   
+   <div class="form-group" id="nothing" style="display:block">
+   <label class="control-label col-sm-2 " >Total Cold Jar Ordered :</label>
+  <div class="col-sm-2">
+  {{coldJarOrdered}}</div>
+   
+   <label class="control-label col-sm-2 " >Total Cold Jar Returned Empty :</label>
+  <div class="col-sm-2">
+  {{coldJarReturned}}</div>
+   
+   
+   <label class="control-label col-sm-2 " >Total Cold Jar Returned Filled :</label>
+  <div class="col-sm-2">
+  {{coldJarReturnedFilled}}</div>
+   
+   </div>
+   
+   <!-- Container Specific -->
+   
+   <div class="form-group" id="nothing" style="display:block">
+   
+   <label class="control-label col-sm-2 " >Total Container Ordered :</label>
+  <div class="col-sm-2">
+  {{containerOrdered}}</div>
+   <label class="control-label col-sm-2 " >Total Container Returned :</label>
+  <div class="col-sm-2">
+  {{containerReturned}}</div>
+   
+   </div>
+   
+   
+   
+   <div class="form-group" id="nothing" style="display:block">
+   
+   <label class="control-label col-sm-2 " >Total Bill :</label>
+  <div class="col-sm-2">
+  {{totalBill}}</div>
+   <label class="control-label col-sm-2 " >Total Payment :</label>
+  <div class="col-sm-2">
+  {{totalPayement}}</div>
+   
+   </div>
+   <button ng-click="printInvoice()" class="customButton btn" style="display: block">Print Reciept</button>
+  <!--  <input type="button" value="Open Popup Window" ng-click="OpenPopupWindow()" /> -->
+   <!-- </div> -->
+    <br>
+    
+    
+    <div class="table-responsive"  style="display: block">          
+   <table class="table  table-hover table-condensed table-bordered">
+   <thead>
+      <tr >
+        <th style="text-align: center; font-size: 12px">Order Date</th>
+        <th style="text-align: center;font-size: 12px">Normal<br> Jar</th>
+        <th style="text-align: center;font-size: 12px">Normal<br>Jar Return</th>
+        <th style="text-align: center;font-size: 12px">Normal Filled<br>Jar Return</th>
+        <th style="text-align: center;font-size: 12px">Cold<br>Jar</th>
+        <th style="text-align: center;font-size: 12px">Cold<br>Jar Return</th>
+        <th style="text-align: center;font-size: 12px">Cold Filled<br>Jar Return</th>
+        <th style="text-align: center;font-size: 12px">Container<br>Ordered</th>
+        <th style="text-align: center;font-size: 12px">Container<br>Return</th>
+         <th style="text-align: center;font-size: 12px">Total Bill</th>
+         <th style="text-align: center;font-size: 12px">Payment</th>
+         
+      </tr>
+    </thead>
+    <tbody>
+      <tr ng-repeat="order in orderHistory">
+        <td style="color: #010110;">{{order.orderDate | date}}</td>
+        <td align="center" style="color: #010110;font-weight: bold; font-size: 15px">{{order.normalWaterJarOrder}}</td>
+        <td align="center" style="color: #010110;font-weight: bold; font-size: 15px">{{order.normalWaterJarReturnedEmpty}}</td>
+        <td align="center" style="color: #010110;font-weight: bold; font-size: 15px">{{order.normalWaterJarReturnedFilled}}</td>
+        <td align="center" style="color: #010110;font-weight:bold;font-size: 15px;">{{order.coldWaterJarOrder}}</td>
+        <td align="center" style="color: #010110;font-weight:bold;font-size: 15px;">{{order.coldWaterJarReturnedEmpty}}</td>
+        <td align="center" style="color: #010110;font-weight:bold;font-size: 15px;">{{order.coldWaterJarReturnedFilled}}</td>
+        <td align="center" style="color: #010110;font-weight:bold;font-size: 15px;">{{order.containerOrdered}}</td>
+        <td align="center" style="color: #010110;font-weight:bold;font-size: 15px;">{{order.containerReturned}}</td>
+        <td align="center" style="color: #010110;font-weight: bold; font-size: 15px">{{order.totalBill}}</td>
+        <td align="center" style="color: #010110;font-weight: bold; font-size: 15px">{{order.paymentRcvd}}</td>
+         
+      </tr>
+   </tbody>
+  </table>
+  </div>
+    </div>
+    
+    
+    
+    
+
+</fieldset>
+</div>
+
+  
+  
+  
+  
+  
+  
+
+</body>
+</html>

@@ -1,0 +1,404 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+<title>Insert title here</title>
+
+<style type="text/css">
+
+.datepickerdemoBasicUsage {
+  /** Demo styles for mdCalendar. */ }
+  .datepickerdemoBasicUsage md-content {
+    padding-bottom: 0px; }
+  .datepickerdemoBasicUsage .validation-messages {
+    font-size: 11px;
+   
+    margin-left: 0px; }
+
+</style>
+<!-- <style type="text/css">
+
+fieldset.scheduler-border {
+    border: 1px groove #ddd !important;
+    padding: 0 1.4em 1.4em 1.4em !important;
+    margin: 0 0 1.5em 0 !important;
+    -webkit-box-shadow:  0px 0px 0px 0px #000;
+            box-shadow:  0px 0px 0px 0px #000;
+}
+
+    legend.scheduler-border {
+        font-size: 1.2em !important;
+        font-weight: bold !important;
+        text-align: left !important;
+        width:auto;
+        padding:0 10px;
+        border-bottom:none;
+    }
+</style>
+ --></head>
+
+<body>
+
+<br>
+<div ng-controller="newOrderController" >
+
+
+
+
+
+<div id="orderWindow">
+<fieldset class="scheduler-border col-sm-11" >
+
+    <legend class="scheduler-border">Manage Order</legend>
+        <div class="form-group">
+      <label class="control-label col-sm-2" for="customerName">Select Customer :</label>
+      <div class="col-sm-4">
+      <select ng-change="onCustomerNameChange()"  id="customerName" class="form-control"  ng-model="names.key"  ng-options="key as value for (key,value) in names">
+      <!-- <option>Select One</option> -->
+      </select>
+      </div>
+    </div>
+    
+
+  
+  
+  <div id="orderTable" class="col-sm-11" style="display: none">
+  
+  
+  <hr>
+<fieldset disabled id="newOrder">
+  <div class="form-horizontal" >
+    
+    
+    <div class="form-group">
+    <label class="control-label col-sm-2" for="address">Address:</label>
+    <div class="col-sm-8">
+    <input type="text" class="form-control" id="address" placeholder="Address" ng-model="customer.address">
+    </div>
+    </div>
+    
+    
+    <div class="form-group">
+    <label class="control-label col-sm-2" for="securityDeposit">Security Deposit:</label>
+    <div class="col-sm-2">
+    <input type="text" class="form-control" id="securityDeposit" placeholder="Security Deposit" ng-model="customer.securityDeposit">
+    </div>
+
+         <label class="control-label col-sm-2" for="mobileNumber">Mobile Number:</label>
+      <div class="col-sm-2">
+        <input type="text" class="form-control" id="mobileNumber" placeholder="Mobile Number" ng-model="customer.mobileNumber">
+      </div>
+      
+        </div>
+         <div class="form-group">
+    <label class="control-label col-sm-2" for="normalJarRate">Normal Jar Rate:</label>
+    <div class="col-sm-2">
+    <input type="text" class="form-control" id="normalJarRate" placeholder="" ng-model="customer.normalJarRate">
+    </div>
+
+         <label class="control-label col-sm-2" for="coldJarRate">Cold Jar Rate:</label>
+      <div class="col-sm-2">
+        <input type="text" class="form-control" id="coldJarRate" placeholder="" ng-model="customer.coldJarRate">
+      </div>
+      <label class="control-label col-sm-2" for="prevContainer">Prev Container:</label>
+      <div class="col-sm-2">
+        <input type="text" class="form-control" id="prevContainer" placeholder="" ng-model="customer.prevContainer">
+      </div>
+        </div>
+    
+      <div class="form-group">
+       <label class="control-label col-sm-2" for="previousDue">Previous Due:</label>
+      <div class="col-sm-2">
+        <input type="text" disabled  class="form-control" ng-init="order.previousDue=0" id="previousDue"  ng-model="order.previousDue">
+      </div>
+    
+    <label class="control-label col-sm-2" for="normalEmptyJars" >Prev Normal Jar :</label>
+    <div class="col-sm-2">
+   <!--  <input type="text" class="form-control" id="normalEmptyJars" ng-init="order.normalWaterJarPending=0" ng-model="order.normalWaterJarPending"> -->
+    <input type="text" class="form-control" id="normalEmptyJars" ng-init="normalWaterJarPending=0" ng-model="normalWaterJarPending">
+    </div>
+    <label class="control-label col-sm-2" for="coldEmptyJars">Prev Cold Jar :</label>
+    <div class="col-sm-2">
+    <!-- <input type="text" class="form-control" id="coldEmptyJars" ng-init="order.normalWaterJarPending=0" ng-model="order.normalWaterJarPending"> -->
+    <input type="text" class="form-control" id="coldEmptyJars" ng-init="coldWaterJarPending=0" ng-model="coldWaterJarPending">
+    </div>
+    
+    </div>
+    
+    
+  </div>
+  <hr>
+    <!-- disabled enabled field set -->
+  </fieldset>
+  
+  
+  <form class="form-horizontal" ng-submit="placeOrder()"> 
+   <input type="hidden" ng-model="order.customerId">
+   
+  
+  <!--  Start Calender -->
+   <div class="form-group">
+   
+   <label class="control-label col-sm-2" for="date"> Order Date:</label>
+         <div class="col-sm-2">
+    <div class="row">
+        <p class="input-group">
+          <input  type="text" class="form-control" uib-datepicker-popup="{{format}}" ng-model="order.orderDate" 
+          is-open="popup1.opened" datepicker-options="dateOptions" ng-required="true" close-text="Close" style="width: 134px" />
+          <span class="input-group-btn">
+            <button type="button" class="customButton btn" ng-click="openCalender()" style="height: 25px;width: 35px"><i class="glyphicon glyphicon-calendar"></i></button>
+          </span>
+        </p>
+      </div>    
+      </div>
+      
+     <!--  <div class="datepickerdemoBasicUsage">
+       <md-content layout-padding="">
+ <md-datepicker ng-model="sasa" md-placeholder="Enter date"></md-datepicker>
+
+    <div layout-gt-xs="row">
+      <div flex-gt-xs="">
+       
+      </div>
+
+  </md-content>
+        </div> -->
+     </div> 
+  
+  
+  
+  
+  
+  
+   <div class="form-group" >
+   
+      <label class="control-label col-sm-2" for="normalWaterJar">Normal Water Jar:</label>
+      <div class="col-sm-2">
+        <input type="number" class="form-control" id="normalWaterJar" ng-blur="calculateTotal()" ng-init="order.normalWaterJarOrder=0"   ng-model="order.normalWaterJarOrder">
+      </div>
+        <!--  <label class="control-label col-sm-2" for="normalWaterRate">Rate:</label>
+      <div class="col-sm-2">
+      <table><tr><td><span> <img alt="Image" src="./images/rupee.png" style="height: 23px; width: 12px" ></span>
+      </td><td>&nbsp;</td><td><input type="number" class="form-control" id="normalWaterRate" ng-blur="calculateTotal()" ng-init="order.normalWaterRate=0"  ng-model="order.normalWaterRate">
+        </td></tr></table></div>
+       -->
+        <label class="control-label col-sm-2" for="normalWaterTotal">Normal Jar Bill :</label>
+      <div class="col-sm-2">
+        <input disabled type="number" class="form-control" id="normalWaterTotal"  ng-model="normalWaterTotal">
+      </div> 
+      
+        <label class="control-label col-sm-2" for="containerOrder">Container Order :</label>
+      <div class="col-sm-2">
+        <input type="number" class="form-control" id="containerOrder" ng-blur="calculateContainer()" ng-init="containerOrder=0"  ng-model="containerOrder">
+      </div> 
+  
+  
+    </div>
+ <div class="form-group">
+<!--   <label class="control-label col-sm-2" for="normalWaterJarReturnFilled">Return Filled :</label>
+      <div class="col-sm-2">
+        <input type="number" class="form-control" id="normalWaterJarReturnFilled" ng-init="order.normalWaterJarReturnedFilled=0"  ng-model="order.normalWaterJarReturnedFilled">
+      </div> -->
+ </div>
+ 
+ 
+ 
+  
+ 
+ 
+ 
+   <div class="form-group">
+      <label class="control-label col-sm-2" for="coldWaterJar">Cold Water Jar:</label>
+      <div class="col-sm-2">
+        <input type="number" class="form-control" id="coldWaterJar" ng-blur="calculateTotal()" ng-init="order.coldWaterJarOrder=0"  ng-model="order.coldWaterJarOrder">
+      </div>
+         <!-- <label class="control-label col-sm-2" for="coldWaterRate">Rate:</label>
+      <div class="col-sm-2">
+       <table><tr>
+       <td><span> <img alt="Image" src="./images/rupee.png" style="height: 23px; width: 12px" ></span>
+      </td><td>&nbsp;</td>
+       <td> <input type="number" class="form-control" id="coldWaterRate" ng-blur="calculateTotal()" ng-init="order.coldWaterRate=0"   ng-model="order.coldWaterRate">
+       </td></tr></table>
+      </div> -->
+        <label class="control-label col-sm-2" for="coldWaterTotal">Cold Jar Bill :</label>
+      <div class="col-sm-2">
+        <input disabled type="number" class="form-control" id="coldWaterTotal" ng-init="coldWaterTotal=0"  ng-model="coldWaterTotal">
+      </div>
+      
+    </div>
+ 
+   <div class="form-group">
+   <!--  <label class="control-label col-sm-2" for="coldWaterJarReturnFilled">Return Filled :</label>
+      <div class="col-sm-2">
+        <input type="number" class="form-control" id="coldWaterJarReturnFilled" ng-init="order.coldWaterJarReturnedFilled=0"  ng-model="order.coldWaterJarReturnedFilled">
+      </div> -->
+   
+   </div>
+ 
+ 
+ 
+ 
+  <div class="form-group">
+      
+      
+        <label class="control-label col-sm-2" for="currBill">Current Ammount:</label>
+      <div class="col-sm-2">
+       <table><tr>
+        <td><span> <img alt="Image" src="./images/rupee.png" style="height: 23px; width: 12px" ></span>
+      </td><td>&nbsp;</td><td><input disabled type="text" class="form-control" id="currBill" ng-init="currBill=0" ng-model="currBill" ></input>
+       </td></tr></table>
+      </div>
+      
+ </div> 
+ 
+ 
+ 
+ 
+<!--    <div class="form-group">
+      
+    </div>
+ --> 
+ 
+ <hr>
+<label class="control-label" >Return:</label>
+<div class="form-group" >
+
+ <label class="control-label col-sm-2" for="normalEmpty">Normal Empty Jar:</label>
+      <div class="col-sm-2">
+        <input  type="number" class="form-control" id="normalEmpty" ng-blur="calculateTotal()" ng-init="order.normalWaterJarReturnedEmpty=0" ng-model="order.normalWaterJarReturnedEmpty">
+      </div>
+      
+      
+
+
+      <label class="control-label col-sm-2" for="normalFilled">Normal Filled Jar:</label>
+      <div class="col-sm-2">
+        <input type="number" class="form-control" id="normalFilled" ng-blur="calculateTotal()" ng-init="order.normalWaterJarReturnedFilled=0"   ng-model="order.normalWaterJarReturnedFilled">
+      </div>
+      
+       <label class="control-label col-sm-2" for="containerReturn">Container Return:</label>
+      <div class="col-sm-2">
+        <input  type="number" class="form-control" id="containerReturn" ng-blur="calculateContainer()"  ng-init="containerReturn=0" ng-model="containerReturn">
+      </div>
+      
+      
+       <!--  <label class="control-label col-sm-2" for="filleReturnRate">Rate :</label>
+      <div class="col-sm-2">
+      <table><tr><td><span> <img alt="Image" src="./images/rupee.png" style="height: 23px; width: 12px" ></span>
+      </td><td>&nbsp;</td><td><input type="number" class="form-control" id="filleReturnRate" ng-blur="calculateTotal()" ng-init="filleReturnRate=0"  ng-model="filleReturnRate">
+        </td></tr></table></div> -->
+      
+        
+         
+    </div>
+    
+    <div class="form-group" >
+    <label class="control-label col-sm-2" for="coldEmpty">Cold Empty Jar:</label>
+      <div class="col-sm-2">
+        <input  type="number" class="form-control" id="coldEmpty" ng-blur="calculateTotal()" ng-init="order.colWaterJarReturnedEmpty=0"  ng-model="order.colWaterJarReturnedEmpty">
+      </div>
+      <label class="control-label col-sm-2" for="coldFilled">Cold Filled Jar:</label>
+      <div class="col-sm-2">
+        <input type="number" class="form-control" id="coldFilled" ng-blur="calculateTotal()" ng-init="order.coldWaterJarReturnedFilled=0"   ng-model="order.coldWaterJarReturnedFilled">
+      </div>
+       <!--  <label class="control-label col-sm-2" for="coldfilleReturnRate">Rate :</label>
+      <div class="col-sm-2">
+      <table><tr><td><span> <img alt="Image" src="./images/rupee.png" style="height: 23px; width: 12px" ></span>
+      </td><td>&nbsp;</td><td><input type="number" class="form-control" id="coldfilleReturnRate" ng-blur="calculateTotal()" ng-init="coldfilleReturnRate=0"  ng-model="coldfilleReturnRate">
+        </td></tr></table></div> -->
+        
+          
+    </div>
+ 
+  <div class="form-group" >
+      <label class="control-label col-sm-2" for="returnAmmount">Return Ammount:</label>
+      <div class="col-sm-2">
+        <input type="number" disabled class="form-control" id="returnAmmount" ng-blur="" ng-init="returnAmmount=0"   ng-model="returnAmmount">
+      </div>
+    </div>
+ 
+
+<hr>
+
+
+<div class="form-group">
+
+<label class="control-label col-sm-2" for="normalWaterJarPending">Total Normal Jar:<span style="font-size: 11px;">(prev+curr-return)</span></label>
+      <div class="col-sm-2">
+        <input type="number" disabled class="form-control" id="normalWaterJarPending"     ng-model="order.normalWaterJarPending">
+      </div>
+      <label class="control-label col-sm-2" for="coldWaterJarPending">Total Cold Jar:<span style="font-size: 11px;">(prev+curr-return)</span></label>
+      <div class="col-sm-2">
+        <input type="number" disabled class="form-control" id="coldWaterJarPending"     ng-model="order.coldWaterJarPending">
+      </div>
+      <label class="control-label col-sm-2" for="totalContainer">Total Container:<span style="font-size: 11px;">(prev+curr-return)</span></label>
+      <div class="col-sm-2">
+        <input type="number" disabled class="form-control" id="totalContainer"     ng-model="order.containerPending">
+      </div>
+
+</div>
+<div class="form-group">
+  
+<label class="control-label col-sm-2" for="totalBill">Total Bill:<br><span style="font-size: 10px;">(prev+curr-return-advnc)</span></label>
+      <div class="col-sm-2">
+       <table><tr>
+        <td><span> <img alt="Image" src="./images/rupee.png" style="height: 23px; width: 12px" ></span>
+      </td><td>&nbsp;</td><td><input disabled type="text" class="form-control" id="totalBill" ng-init="order.totalBill=0" ng-model="order.totalBill" ></input>
+       </td></tr></table>
+      </div>
+      
+       <label class="control-label col-sm-2" for="advance">Payment:</label>
+      <div class="col-sm-2">
+        <table><tr>
+        <td><span style="vertical-align: middle"> <img alt="Image" src="./images/rupee.png" style="height: 23px; width: 12px; " ></span>
+      </td><td>&nbsp;</td><td><input type="text" valid-number class="form-control" id="advance" ng-blur="calculateTotal()" ng-init="order.paymentRcvd=0" ng-model="order.paymentRcvd">
+      </td></tr></table>
+      </div>
+    
+      
+      <label class="control-label col-sm-2" for="due">Due:</label>
+      <div class="col-sm-2">
+        <table><tr><td><span> <img alt="Image" src="./images/rupee.png" style="height: 23px; width: 12px" ></span>
+      </td><td>&nbsp;</td><td>
+        <input disabled type="text" class="form-control" id="due" ng-init="order.outstandingAmmount=0" ng-model="order.outstandingAmmount">
+      </td></tr></table>
+      </div>
+</div>
+
+
+
+
+
+
+
+
+<div class="form-group">
+       <div class="col-sm-offset-10 col-sm-3">
+       <button type="submit" class="customButton btn" id="submitButton" >Submit</button>
+       <button type="button" class="customButton btn" ng-click="cancel()">Cancel</button>
+       </div>
+</div>
+
+</form> 
+ 
+ 
+  
+  
+  </div><!-- End of order div -->
+  
+  
+  
+  
+    <!-- result table div -->
+</div>
+
+
+<!-- outer main fieldset -->
+</fieldset>  
+  </div>
+  </div>
+  <!-- controller div -->
+  
+
+</body>
+</html>

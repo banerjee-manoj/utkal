@@ -1,0 +1,304 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+<script src="./../../js/global.js"></script>
+  
+  <script src="./../../js/angular/jquery.min.js"></script>
+  <script src="./../../js/angular/angular.js"></script> 
+  <script src="./../../js/angular/uirouter.js"></script>
+  <script src="./../../js/angular/ui-bootstrap-tpl.js"></script> 
+  <script src="./../../bootstrap/dist/js/bootstrap.min.js"></script>
+
+  <link href="./../../bootstrap/dist/css/bootstrap.css" rel="stylesheet"  type="text/css"  />
+  <link href="./../../css/custom.css" rel="stylesheet" type="text/css"  />
+<!--  <script src="./../../js/controller/homeController.js"></script>
+  <script src="./../../js/controller/customerController.js"></script>
+  <script src="./../../js/controller/orderController.js"></script>
+  <script src="./../../js/controller/orderHistoryController.js"></script>
+  <script src="./../../js/controller/editOrderController.js"></script>
+  <script src="./../../js/controller/defaulterController.js"></script>
+    <script src="./../../js/controller/successController.js"></script>
+    
+  <script src="./../../js/services/customerService.js"></script>
+  <script src="./../../js/services/orderService.js"></script>
+  <script src="./../../js/services/defaulterService.js"></script>
+  <script src="./../../js/services/orderHistoryService.js"></script>
+ 
+   -->
+<script src="./../../js/controller/printController.js"></script>
+<script src="./../../js/services/printService.js"></script>
+ <style>
+    .invoice-box{
+        max-width:800px;
+        margin:auto;
+        padding:30px;
+        border:1px solid #eee;
+        box-shadow:0 0 10px rgba(0, 0, 0, .15);
+        font-size:16px;
+        line-height:24px;
+        font-family:'Helvetica Neue', 'Helvetica', Helvetica, Arial, sans-serif;
+        color:#555;
+        background:"./../../bg-images/lines-7.jpg" 
+    }
+     .invoice-box table tr.heading td{
+        background:#eee;
+        border-bottom:1px solid #ddd;
+        font-weight:bold;
+    }
+      .invoice-box table tr.item td{
+        border-bottom:1px solid #eee;
+    }
+     .invoice-box table tr.item.last td{
+        border-bottom:none;
+    }
+    
+    .invoice-box table tr.total td:nth-child(3){
+        border-top:2px solid #eee;
+        font-weight:bold;
+    }
+    
+    /* 
+    .invoice-box table{
+        width:100%;
+        line-height:inherit;
+        text-align:left;
+    }
+    
+    .invoice-box table td{
+        padding:5px;
+        vertical-align:top;
+    }
+    
+    .invoice-box table tr td:nth-child(2){
+        text-align:right;
+    }
+    
+    .invoice-box table tr.top table td{
+        padding-bottom:20px;
+    }
+    
+    .invoice-box table tr.top table td.title{
+        font-size:45px;
+        line-height:45px;
+        color:#333;
+    }
+    
+    .invoice-box table tr.information table td{
+        padding-bottom:40px;
+    }
+    
+   
+    .invoice-box table tr.details td{
+        padding-bottom:20px;
+    }
+    
+    .invoice-box table tr.item td{
+        border-bottom:1px solid #eee;
+    }
+    
+   
+    
+    @media only screen and (max-width: 600px) {
+        .invoice-box table tr.top table td{
+            width:100%;
+            display:block;
+            text-align:center;
+        }
+        
+        .invoice-box table tr.information table td{
+            width:100%;
+            display:block;
+            text-align:center;
+        }
+    }
+     */</style>
+    
+    <script type="text/javascript">
+       
+    </script>
+    
+    </head>
+<body ng-app="printApp" ng-controller="printController"  >
+<!--   <div class="modal-header" ng-controller="orderHistoryController">
+            <h3 class="modal-title">I'm a modal!</h3>
+        </div>
+ -->
+         <div class="modal-body" id="printArea">
+        
+         <div class="invoice-box">
+        
+          <div align="center">
+         <table><tr><td><label style="font-size: 25px">UTKAL AQUA INDUSTRIES</label></td></tr>
+         <tr><td align="center">P.O: Raghobpur,Dist: Purulia.</td></tr>
+         <tr><td align="center" style="font-size: 12px">(+91)8944811058,(+91)8944811058</td></tr></table>
+         </div>
+         <hr>
+         <div id="customerBasicDetails">
+         <table style="width: 100%" cellpadding="0" cellspacing="0"><tr><td>Customer:</td><td align="left"><span style="font-size: 12px;font-weight: bold" ng-bind="customer.customerName"></span></td><td>Mob:</td><td><span style="font-size: 12px;font-weight: bold" ng-bind="customer.mobileNumber"></span></td></tr>
+         <tr><td>Normal Jar Rate:</td><td><span ng-bind="customer.normalJarRate" style="font-size: 12px;font-weight: bold"></span></td><td>Cold Jar Rate:</td><td><span style="font-size: 12px;font-weight: bold" ng-bind="customer.coldJarRate"></span></td></tr>
+         </table>
+         </div>
+        <hr>
+        <div align="center"><table><tr><td>Billing Period :</td><td><div style="font-size: 12px;font-weight: bold" > {{startDate| date}} </div></td><td>&nbsp;</td><td> To</td><td>&nbsp;</td><td> <div style="font-size: 12px;font-weight: bold" >{{endDate | date }}</div></td></tr></table>
+        </div>
+        <hr>
+        <div>
+        <table width="100%"><tr class="heading">
+                <td width="50%">Item</td>
+                <td width="20%">Qty</td >
+                <td width="30%" align="center">Price</td>
+            </tr>
+        <tr class="item">
+        <td>Normal Water</td>
+        <td>{{normalJarOrdered}}</td>
+        <td align="center">{{customer.normalJarRate*normalJarOrdered}}</td>
+        </tr>
+        <tr class="item">
+        <td>Normal Water Returned</td>
+        <td>{{normalWaterReturnedFilled}}</td>
+        <td align="center">-{{customer.normalJarRate*normalWaterReturnedFilled}}</td>
+        </tr>
+        <tr class="item">
+        <td>Cold Water</td>
+        <td>{{coldJarOrdered}}</td>
+        <td align="center">{{customer.coldJarRate*coldJarOrdered}}</td>
+        </tr>
+        <tr class="item">
+        <td>Cold Water Returned</td>
+        <td>{{coldJarReturnedFilled}}</td>
+        <td align="center">-{{customer.coldJarRate*coldJarReturnedFilled}}</td>
+        </tr>
+        <tr class="item last">
+        <td>Payment Recieved</td>
+        <td>N/A</td>
+        <td align="center">{{totalPayement}}</td>
+        </tr>
+        
+        <!--  <tr class="item last">
+         <td colspan="1">
+                   Container
+                </td>
+                <td colspan="1">
+                   1
+                </td>
+                <td  colspan="1">
+                    $10.00
+                </td>
+            </tr> -->
+            
+            <tr class="total">
+                <td></td>
+                <td></td>
+                <td align="center">
+                   Total Due: {{finalDue}}
+                </td>
+            </tr>
+            </table>
+        </div>
+       <!--  <table cellpadding="0" cellspacing="0">
+            <tr class="top">
+                <td colspan="2">
+                    <table>
+                        <tr>
+                            <td class="title">
+                              UTKAL AQUA INDUSTRIES
+                            </td>
+                            
+                            <td>
+                                Invoice #: 123<br>
+                                Created: Todays Date<br>
+                                Billing Period : Start Date - End Date
+                            </td>
+                        </tr>
+                    </table>
+                </td>
+            </tr>
+            
+            <tr class="information">
+                <td colspan="2">
+                    <table>
+                        <tr>
+                            <td>
+                                Muchi Para<br>
+                                Purulia<br>
+                                8001177921
+                            </td>
+                            
+                            <td>
+                                User Name<br>
+                                Mobile Number<br>
+                                Address
+                            </td>
+                        </tr>
+                    </table>
+                </td>
+            </tr>
+            
+            <tr class="heading">
+                <td colspan="1">
+                    Item
+                </td>
+                <td colspan="1">
+                    Qty
+                </td >
+                
+                <td colspan="1">
+                    Price
+                </td>
+            </tr>
+            
+            <tr class="item">
+                <td colspan="1">
+                    Normal Water
+                </td>
+                <td colspan="1">
+                    3
+                </td>
+                <td colspan="1">
+                    $300.00
+                </td>
+            </tr>
+            
+            <tr class="item">
+                <td colspan="1">
+                   Cold Water
+                </td>
+                <td colspan="1">
+                   5
+                </td> 
+                <td colspan="1">
+                    $75.00
+                </td>
+            </tr>
+            
+            <tr class="item last">
+                <td colspan="1">
+                   Container
+                </td>
+                <td colspan="1">
+                   1
+                </td>
+                <td  colspan="1">
+                    $10.00
+                </td>
+            </tr>
+            
+            <tr class="total">
+                <td></td>
+                <td></td>
+                <td>
+                   Total: $385.00
+                </td>
+            </tr>
+        </table>
+ -->    </div>
+
+        </div>
+        <div class="modal-footer">
+            <button  class="customButton btn"  ng-click="print()">Print</button>
+            <button class="customButton btn"  ng-click="cancel()">Cancel</button>
+        </div>
+        <!-- class="btn btn-warning" class="btn btn-primary" -->
+</body>
+</html>

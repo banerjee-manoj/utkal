@@ -1,0 +1,272 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+
+<style type="text/css">
+
+/* .datepickerdemoBasicUsage {
+   }
+  .datepickerdemoBasicUsage md-content {
+    padding-bottom: 0px; }
+  .datepickerdemoBasicUsage .validation-messages {
+    font-size: 11px;
+   
+    margin-left: 0px; } */
+
+</style>
+</head>
+
+<body>
+
+<br>
+<div ng-controller="editOrderController" >
+<div id="editOrderWindow">
+<fieldset class="scheduler-border col-sm-11" >
+    <legend class="scheduler-border">Edit Order</legend>
+     
+     <form class="form-horizontal" ng-submit="getDetailsByCustomer()"> 
+      <div class="form-group">
+      <label class="control-label col-sm-2" for="customerName">Select Customer :</label>
+      <div class="col-sm-4">
+     <!--  <select ng-change="onCustomerNameChange()"  style="height: 30px;"  id="customerName" class="form-control"  ng-model="names.key"  
+     ng-options="key as value for (key,value) in names">
+      </select>  -->
+      <input type="text" ng-model="selectedCustomer"  class="form-control"
+    uib-typeahead="customer.customerId as customer.customerName for customer in customers | 
+    filter:$viewValue | limitTo:8" 
+    typeahead-input-formatter="formatLabel($model)" >
+      </div>
+      <div class="form-group" id="dateDiv" style="display:none">
+      <label class="control-label col-sm-2" for="customerName">Select Date :</label>
+      <div class="col-sm-2">
+        <div style="margin-right: -7px;margin-left: -10px">
+       <p class="input-group" style="margin-top: 2px">
+          <input  type="text" class="form-control" uib-datepicker-popup="{{format}}" ng-model="order.orderDate" 
+          is-open="popup1.opened" datepicker-options="dateOptions" ng-required="true" close-text="Close" style="width: 134px" />
+        <span class="input-group-btn">
+            <button type="button" class="customButton btn" ng-click="openCalender()" style="height: 25px;width: 35px"><i class="glyphicon glyphicon-calendar"></i></button>
+         </span>
+        </p>
+      </div> 
+      </div> 
+    </div>
+    </div>
+    
+   <div id="btnDiv" style="display: none">
+  <div class="form-group">
+  <div class="col-sm-11"> 
+   <button type="submit" class="customButton btn">Get Details</button>
+  <div>
+  </div>
+  <hr>
+ </div>
+  </div>
+  </div> 
+  </form>
+    
+  
+  
+  <div id="editTableDiv" style="display: none">
+  <!-- <form class="form-horizontal" ng-submit="editCustomerOrder()">
+    <input type="hidden" ng-model="customer.customerId" value="{{order.customerId}}"> -->
+    
+    
+    <!-- Basic Informations  -->
+    
+    
+   <fieldset disabled id="basicInfo">
+  <div class="form-horizontal" >
+    
+    
+    <div class="form-group">
+    <label class="control-label col-sm-2" for="address">Address:</label>
+    <div class="col-sm-8">
+    <input type="text" class="form-control" id="address" placeholder="Address" ng-model="customer.address">
+    </div>
+    </div>
+    
+    
+    <div class="form-group">
+    <label class="control-label col-sm-2" for="securityDeposit">Security Deposit:</label>
+    <div class="col-sm-2">
+    <input type="text" class="form-control" id="securityDeposit" placeholder="Security Deposit" ng-model="customer.securityDeposit">
+    </div>
+
+         <label class="control-label col-sm-2" for="mobileNumber">Mobile Number:</label>
+      <div class="col-sm-2">
+        <input type="text" class="form-control" id="mobileNumber" placeholder="Mobile Number" ng-model="customer.mobileNumber">
+      </div>
+      
+        </div>
+         <div class="form-group">
+    <label class="control-label col-sm-2" for="normalJarRate">Normal Jar Rate:</label>
+    <div class="col-sm-2">
+    <input type="text" class="form-control" id="normalJarRate"  ng-model="customer.normalJarRate">
+    </div>
+
+         <label class="control-label col-sm-2" for="coldJarRate">Cold Jar Rate:</label>
+      <div class="col-sm-2">
+        <input type="text" class="form-control" id="coldJarRate"  ng-model="customer.coldJarRate">
+      </div>
+        </div>
+        
+        <!--show previous records-->
+        <div class="form-group">
+    <label class="control-label col-sm-2" for="normalJarPending">Normal Jar Pending:</label>
+    <div class="col-sm-2">
+    <input type="text" class="form-control" id="normalJarPending"  ng-model="prevDtls.prevNormalJarPending">
+    </div>
+
+         <label class="control-label col-sm-2" for="coldJarPending">Cold Jar Pending:</label>
+      <div class="col-sm-2">
+        <input type="text" class="form-control" id="coldJarPending"  ng-model="prevDtls.prevColdJarPending">
+      </div>
+        </div>
+        
+        <div class="form-group">
+    <label class="control-label col-sm-2" for="containerPending">Container Pending:</label>
+    <div class="col-sm-2">
+    <input type="text" class="form-control" id="containerPending"  ng-model="prevDtls.prevContainerPending">
+    </div>
+
+         <label class="control-label col-sm-2" for="paymentDue">Payment Due:</label>
+      <div class="col-sm-2">
+        <input type="text" class="form-control" id="paymentDue"  ng-model="prevDtls.prevPaymentDue">
+      </div>
+        </div>
+        
+        
+  </div>
+  <hr>
+    <!-- disabled enabled field set -->
+  </fieldset>
+    <!-- End of Basic Informations -->
+    
+    
+    
+    
+    
+    
+    
+  <fieldset disabled id="editForm">    
+   <form class="form-horizontal" ng-submit="editCustomerOrder()">
+    <input type="hidden" ng-model="order.customerId" value="{{order.customerId}}">
+    <input type="hidden" ng-model="order.isNewForm" value="{{order.isNewForm}}">
+    <input type="hidden" ng-model="prevDtls.isNewForm" value="{{prevDtls.isNewForm}}">
+    <div class="form-group">
+      <label class="control-label col-sm-2" for="normalWaterJar">Normal Jar Order:</label>
+      <div class="col-sm-2">
+        <input  type="text" class="form-control" ng-blur="calculateTotal()" ng-init="order.normalWaterJarOrder=0" id="normalWaterJar" ng-model="order.normalWaterJarOrder">
+      </div>
+         <label class="control-label col-sm-2" for="coldWaterJar">Cold Jar Order:</label>
+      <div class="col-sm-2">
+         <input type="text" class="form-control" id="coldWaterJar" ng-blur="calculateTotal()" ng-init="order.coldWaterJarOrder=0"  ng-model="order.coldWaterJarOrder">
+      </div>
+    </div>
+    
+    <div class="form-group">
+      <label class="control-label col-sm-2" for="normalJarReturnedEmpty">Normal Empty Jar Return:</label>
+      <div class="col-sm-2">
+        <input  type="text" class="form-control" id="normalJarReturnedEmpty" ng-model="order.normalWaterJarReturnedEmpty"  ng-init="order.normalWaterJarReturnedEmpty=0">
+      </div>
+         <label class="control-label col-sm-2" for="coldWaterJarReturnedEmpty">Cold Empty Jar Return:</label>
+      <div class="col-sm-2">
+         <input type="text" class="form-control" id="coldWaterJarReturnedEmpty"   ng-model="order.coldWaterJarReturnedEmpty" ng-init="order.coldWaterJarReturnedEmpty=0">
+      </div>
+    </div>
+    
+    <div class="form-group">
+      <label class="control-label col-sm-2" for="normalWaterReturnedFilled">Normal Filled Jar Return:</label>
+      <div class="col-sm-2">
+        <input  type="text" class="form-control" id="normalWaterReturnedFilled" ng-model="order.normalWaterJarReturnedFilled" ng-blur="calculateTotal()" ng-init="order.normalWaterJarReturnedFilled=0">
+      </div>
+         <label class="control-label col-sm-2" for="coldWaterReturnedFilled">Cold Filled Jar Return:</label>
+      <div class="col-sm-2">
+         <input type="text" class="form-control" id="coldWaterReturnedFilled"   ng-model="order.coldWaterJarReturnedFilled" ng-blur="calculateTotal()" ng-init="order.coldWaterJarReturnedFilled=0">
+      </div>
+    </div>
+    
+    
+      <div class="form-group">
+      <label class="control-label col-sm-2" for="containerOrdered">Container Ordered:</label>
+      <div class="col-sm-2">
+        <input  type="text" class="form-control" id="containerOrdered" ng-model="order.containerOrdered" ng-init="order.containerOrdered=0">
+      </div>
+         <label class="control-label col-sm-2" for="containerReturned">Container Return:</label>
+      <div class="col-sm-2">
+         <input type="text" class="form-control" id="containerReturned" ng-blur="calculateTotal()" ng-init="order.containerReturned=0"  ng-model="order.containerReturned">
+      </div>
+    </div>
+    
+    
+    
+    <div class="form-group">
+      <label class="control-label col-sm-2" for="totalBill">Total Bill:</label>
+      <div class="col-sm-2">
+        <input  type="text" disabled class="form-control" id="totalBill" ng-model="order.totalBill" ng-init="order.totalBill=0">
+      </div>
+      <label class="control-label col-sm-2" for="paymentRcvd">Payment:</label>
+      <div class="col-sm-2">
+        <input  type="text" class="form-control" id="paymentRcvd" ng-model="order.paymentRcvd" ng-init="order.paymentRcvd=0">
+      </div>
+    </div>
+    
+    
+    
+    
+     <div id="submitDiv" style="display: none">
+    <div class="form-group">
+       <div class="col-sm-offset-6 col-sm-3">
+        <button type="submit"  class="customButton btn">Submit</button>
+        <button type="button" ng-click="cancel()" class="customButton btn">Cancel</button>
+      </div>
+    </div>
+    </div>
+    
+        
+  </form>
+    <!-- disabled enabled field set -->
+  </fieldset>
+  <!-- Edit button div -->
+  <div id="editButtonDiv" style="display: block">
+       <div class="form-group">
+       <div class="col-sm-offset-6 col-sm-2">
+       <button type="button" ng-click="enableEdit()" class="customButton btn">Edit</button>
+        <button type="button" ng-click="cancel()" class="customButton btn">Cancel</button>
+      </div>
+    </div>
+    </div>
+  
+  <!-- End of Edit button Div -->
+  
+  </div>
+  <!-- End of editTableDiv -->
+  
+  
+  
+  
+    
+</fieldset>  
+  </div>
+  </div>
+  
+  
+  
+  
+  <!-- <div id="orderTable" class="col-sm-11" style="display: none"> -->
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+
+</body>
+</html>

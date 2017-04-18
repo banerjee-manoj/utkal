@@ -1,0 +1,109 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+</head>
+
+<body>
+
+<br>
+<div ng-controller="orderDetailsByDate" >
+
+<fieldset class="scheduler-border col-sm-11" >
+    <legend class="scheduler-border">Order Details By Date</legend>
+
+
+
+<form class="form-horizontal" ><!--  ng-submit="orderHistory()"> -->
+
+
+<div class="form-group" id="dateDiv" style="display:block">
+      <label class="control-label col-sm-2 col-sm-offset-1">Start Date :</label>
+      <div class="col-sm-2">
+        <div class="row">
+        <p class="input-group" style="margin-top: -4px">
+          <input  type="text" class="form-control" uib-datepicker-popup="{{format}}" ng-model="orderDetails.startDate" 
+          is-open="popup1.opened" datepicker-options="dateOptions" ng-required="true" close-text="Close" style="width: 158px" />
+          <span class="input-group-btn">
+            <button type="button" class="customButton btn" ng-click="openCalender()" style="height: 25px;width: 35px"><i class="glyphicon glyphicon-calendar"></i></button>
+          </span>
+        </p>
+      </div> 
+      </div> 
+    
+      <label class="control-label col-sm-2 " >End Date :</label>
+      <div class="col-sm-2">
+        <div class="row">
+        <p class="input-group" style="margin-top: -4px">
+          <input  type="text" class="form-control" uib-datepicker-popup="{{format}}" ng-model="orderDetails.endDate" 
+          is-open="popup2.opened" datepicker-options="dateOptions" ng-required="true" close-text="Close" style="width: 158px" />
+          <span class="input-group-btn">
+            <button type="button" class="customButton btn" ng-click="openCalender2()" style="height: 25px;width: 35px"><i class="glyphicon glyphicon-calendar"></i></button>
+          </span>
+        </p>
+      </div> 
+      </div> 
+    </div>
+    
+    <button  id="btnDiv" ng-click="getOrderDetailsByDt()" class="customButton btn" style="display: block">Get Order Details</button>
+    </form>
+    
+    
+    <br>
+    
+    <div class="table-responsive"  id="orderDetailsTableDiv" style="display: none">    
+    <table class="table  table-hover table-condensed table-bordered" id="orderDetailsTable">
+   <thead>
+      <tr >
+        <th style="text-align: center; font-size: 12px">Order Date</th>
+        <th style="text-align: center;font-size: 12px">Normal<br> Jar({{normalJarOrderedCount}})</th>
+        <th style="text-align: center;font-size: 12px">Normal<br>Jar Return({{normalJarReturnedEmptyCount}})</th>
+        <th style="text-align: center;font-size: 12px">Normal Filled<br>Jar Return({{normalJarReturnedFilledCount}})</th>
+        <th style="text-align: center;font-size: 12px">Cold<br>Jar({{coldJarOrderedCount}})</th>
+        <th style="text-align: center;font-size: 12px">Cold<br>Jar Return({{coldJarReturnedEmptyCount}})</th>
+        <th style="text-align: center;font-size: 12px">Cold Filled<br>Jar Return({{coldJarReturnedFilledCount}})</th>
+        <th style="text-align: center;font-size: 12px">Container<br>Ordered({{containerOrderedCount}})</th>
+        <th style="text-align: center;font-size: 12px">Container<br>Return({{containerReturnedCount}})</th>
+         <th style="text-align: center;font-size: 12px">Total Bill({{totalBillCount}})</th>
+         <th style="text-align: center;font-size: 12px">Payment({{paymentRecvdCount}})</th>
+         
+      </tr>
+    </thead>
+    <tbody>
+      <tr ng-repeat="order in orderHistory">
+        <td style="color: #010110;">{{order.customerName}}</td>
+        <td align="center" style="color: #010110;font-weight: bold; font-size: 15px">{{order.normalWaterJarOrder}}</td>
+        <td align="center" style="color: #010110;font-weight: bold; font-size: 15px">{{order.normalWaterJarReturnedEmpty}}</td>
+        <td align="center" style="color: #010110;font-weight: bold; font-size: 15px">{{order.normalWaterJarReturnedFilled}}</td>
+        <td align="center" style="color: #010110;font-weight:bold;font-size: 15px;">{{order.coldWaterJarOrder}}</td>
+        <td align="center" style="color: #010110;font-weight:bold;font-size: 15px;">{{order.coldWaterJarReturnedEmpty}}</td>
+        <td align="center" style="color: #010110;font-weight:bold;font-size: 15px;">{{order.coldWaterJarReturnedFilled}}</td>
+        <td align="center" style="color: #010110;font-weight:bold;font-size: 15px;">{{order.containerOrdered}}</td>
+        <td align="center" style="color: #010110;font-weight:bold;font-size: 15px;">{{order.containerReturned}}</td>
+        <td align="center" style="color: #010110;font-weight: bold; font-size: 15px">{{order.totalBill}}</td>
+        <td align="center" style="color: #010110;font-weight: bold; font-size: 15px">{{order.paymentRcvd}}</td>
+         
+      </tr>
+   </tbody>
+  </table>
+  </div>
+  
+   
+   
+   
+   
+       
+    
+
+</fieldset>
+</div>
+
+  
+  
+  
+  
+  
+  
+
+</body>
+</html>

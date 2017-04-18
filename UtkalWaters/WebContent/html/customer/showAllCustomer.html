@@ -1,0 +1,38 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+</head>
+<body>
+<br>
+<div ng-controller="showAllCustomerController">
+<fieldset class="scheduler-border col-sm-11" >
+    <legend class="scheduler-border">Customer List</legend>
+
+    <br>
+
+<hr>
+<br>
+  <div class="table-responsive" id="customerList" style="display: block">          
+   <table class="table table-condensed table-bordered" id="customerListTable">
+   <thead>
+      <tr >
+        <th style="text-align: center;">Customer Name</th>
+         <th style="text-align: center;">Mobile Number</th>
+          <th style="text-align: center;">Activation Date</th>
+           <th style="text-align: center;">Delete</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr ng-repeat="customer in customerList " >
+        <td style="color: #010110;">{{customer.customerName | uppercase}}</td>
+        <td style="color: #010110;">{{customer.mobileNumber }}</td>
+        <td style="color: #010110;">{{customer.activationDate | date}}</td>
+       <td align="center"><button type="button" ng-click="deleteCustomer(customer.customerId)" class="btn customButton "><span class="glyphicon glyphicon-trash"></span>  Delete</button></td>
+      </tr> 
+   </tbody>
+  </table>
+				<br></fieldset>
+</div>
+</body>
+</html>

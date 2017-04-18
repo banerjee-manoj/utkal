@@ -1,0 +1,233 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <title>Utkal Aqua Industries</title>
+  <link rel="icon" href="./images/jarImage.png">
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <script src="./js/global.js"></script>
+  
+  <script src="./js/angular/jquery.min.js"></script> 
+  <script src="./js/angular/angular.js"></script> 
+  <script src="./js/angular/uirouter.js"></script>
+  <script src="./js/angular/ui-bootstrap-tpl.js"></script> 
+   <script src="./bootstrap/dist/js/bootstrap.min.js"></script>
+  
+ <script src="./js/angular/Jquery-Datatable.js" ></script>
+<script src="./js/angular/bootstrap-DataTable.js"></script>
+ <!-- <link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" /> -->
+  <link rel="stylesheet" href="./css/bootstrap-DataTable.css" />
+   
+    
+
+  <link href="./bootstrap/dist/css/bootstrap.css" rel="stylesheet"  type="text/css"  /> 
+  <link href="./css/custom.css" rel="stylesheet" type="text/css"  />
+
+  <script src="./js/controller/homeController.js"></script>
+  <script src="./js/controller/customerController.js"></script>
+  <script src="./js/controller/orderController.js"></script>
+  <script src="./js/controller/orderHistoryController.js"></script>
+  <script src="./js/controller/editOrderController.js"></script>
+  <script src="./js/controller/defaulterController.js"></script>
+    <script src="./js/controller/successController.js"></script>
+    <script src="./js/controller/deleteMessageController.js"></script>
+    
+  <script src="./js/services/customerService.js"></script>
+  <script src="./js/services/orderService.js"></script>
+  <script src="./js/services/defaulterService.js"></script>
+  <script src="./js/services/orderHistoryService.js"></script>
+  
+  
+<!--   <script src="./js/angular/angular-material.js"></script>
+  <script src="./js/angular/angular-animate.js"></script>
+  <script src="./js/angular/angular-aria.js"></script>
+  <script src="./js/angular/angular-messages.js"></script>
+  <link rel="stylesheet" href="./css/angular-material.css">
+ -->  
+ <style>
+  .loader {
+    position:fixed;
+    left:0px;
+    top:0px;
+    right:0px;
+    bottom:0px;
+    background:none rgba(255,255,255,0.7);
+    z-index:9999;
+    display:table;
+    width:100%;
+    height:100%;
+    text-align:center;
+    vertical-align:middle;
+    
+    }
+    .loader div
+    {
+    display:table-cell;
+    text-align:center;
+    vertical-align:middle; 
+    }
+    .loader.hide {
+     display:none !important;
+    }
+ </style>
+</head>
+<body   background="./bg-images/lines-7.jpg" >
+
+
+
+
+<div class="container-fluid" ng-app="utkal.waters.home">
+<div ng-controller="homeController" style="display: block"> 
+<div id="loadingMessage" class="loader" style="display: none"><div><h4>Please Wait...</h4><br><img style="height: 45px;width: 45px" src="./bg-images/default.gif" ></img></div></div>
+
+
+<nav class="navbar navbar-inverse">
+  <div class="container-fluid" >
+     <img alt="Image" src="./images/logo.jpg" class="navbar-brand"> 
+    <div class="caption_container">Utkal Aqua Industries</div>	
+    <!-- <div class="logout_container">Welcome {{welcomeName}}
+    <span id="pipeSeparator" style="display:block;">
+							<b>|</b> 
+						</span>
+    <a href="#" onclick="logout()" id="logout" style="display: block;">LOGOUT</a>
+    </div> -->
+    </div>
+</nav>
+
+
+
+
+
+
+
+
+<div id="loginDiv" class="container" style="padding-top: 100px">
+<form class="form-horizontal">
+<fieldset class="scheduler-border" >
+    <legend class="scheduler-border">Login</legend>
+    <div align="center">
+    <div class="form-group">
+       <label class="control-label col-sm-4" for="customerName">User Name:</label>
+      <div class="col-sm-4">
+        <input type="text" class="form-control" id="userName"  placeholder="User Name" ng-model="user.userName" ng-required="true">
+      </div>
+      </div>
+      <div class="form-group">
+         <label class="control-label col-sm-4" for="mobileNumber">Password:</label>
+      <div class="col-sm-4">
+        <input ng-required="true" type="password" class="form-control" id="password" placeholder="Password" ng-model="user.password" >
+      </div>
+    </div>
+     <div class="form-group">
+      <div class="col-sm-offset-5 col-sm-2">
+        <button type="submit" class="customButton btn" ng-click="login()">Submit</button>
+        <!--  <button type="reset" class="customButton btn">Reset</button> -->
+      </div>
+    </div>
+    <div>{{message}}</div>
+    </div>
+    
+</fieldset>    
+  </form>
+</div>
+
+  <div class="row content">
+
+
+
+
+
+<div id="landingPageDiv" style="display: none">
+
+
+<!-- Navigational Container -->
+    <div class="col-sm-2 sidenav" style="">
+   <div style="font-size: 15px;color: white" align="center"> Welcome </b>{{welcomeName}}</b></div>
+     <!-- Accordionn Menu -->
+
+   
+    <div>
+     <uib-accordion close-others="oneAtATime=true">
+       <div uib-accordion-group  is-open="false" >
+       <!-- class="panel-default" -->
+         <uib-accordion-heading>
+            Manage Customer <i class=" glyphicon" ng-class="{'glyphicon-chevron-down': status.isCustomHeaderOpen, 'glyphicon-chevron-right': !status.isCustomHeaderOpen}"></i>
+         </uib-accordion-heading>
+        <div>
+       
+         <ul class="">
+        <li><a ui-sref="addCustomer" style="font-size: 13px">Add New Customer</a></li>
+        <li><a ui-sref="searchCustomer" style="font-size: 13px">Search Customer</a></li>
+        <li><a ui-sref="showAllCustomer" style="font-size: 13px">Show All Customer</a></li>
+    </ul>
+        </div>
+         
+         </div>
+    <div uib-accordion-group  is-open="false" >
+         <uib-accordion-heading>
+            Manage Order <i class=" glyphicon" ng-class="{'glyphicon-chevron-down': status.isCustomHeaderOpen, 'glyphicon-chevron-right': !status.isCustomHeaderOpen}"></i>
+         </uib-accordion-heading>
+          <ul class="">
+        <!-- <li><a ui-sref="newOrder" style="font-size: 13px">Manage Order</a></li> -->
+        <li><a ui-sref="editOrder" style="font-size: 13px">Manage Order</a></li>
+         <li><a ui-sref="orderBilling" style="font-size: 13px">Order History</a></li>
+         <li><a ui-sref="jarDefaulters" style="font-size: 13px">Defaulter</a></li>
+         <li><a ui-sref="orderDetailsByDate" style="font-size: 13px">Order Details By Date</a></li>
+    </ul>
+         </div>
+         
+         <!-- <div uib-accordion-group  is-open="false" >
+         <uib-accordion-heading>
+            Defaulter List <i class=" glyphicon" ng-class="{'glyphicon-chevron-down': status.isCustomHeaderOpen, 'glyphicon-chevron-right': !status.isCustomHeaderOpen}"></i>
+         </uib-accordion-heading>
+          <ul class="">
+        <li><a ui-sref="moneyDefaulters" style="font-size: 13px">Money Defaulter</a></li>
+        <li><a ui-sref="jarDefaulters" style="font-size: 13px">Jar Defaulter</a></li>
+    </ul>
+         </div> -->
+         
+         <!-- <div uib-accordion-group  is-open="false" >
+         <uib-accordion-heading>
+            Generate Bills <i class=" glyphicon" ng-class="{'glyphicon-chevron-down': status.isCustomHeaderOpen, 'glyphicon-chevron-right': !status.isCustomHeaderOpen}"></i>
+         </uib-accordion-heading>
+          <ul class="">
+        <li><a ui-sref="orderBilling" style="font-size: 13px">Bills By Date</a></li>
+        <li><a ui-sref="jarDefaulters" style="font-size: 13px">Jar Defaulter</a></li>
+    </ul>
+         </div> 
+   -->
+  </uib-accordion>
+</div>
+    <!-- End of Menu -->
+  
+  
+  
+    </div>
+<!--End of Navigational Container -->
+
+
+
+<!-- Main Container -->
+    <div class="col-sm-10" style="" ><br>
+    <!-- <div align="center"><button ng-click="home" class="customButton btn">Home</button></div> -->
+    <div class="container" >
+    <div ui-view>
+    <br>
+    </div>
+    </div>
+    </div>
+<!--End of Main Container -->
+
+
+
+  </div>
+</div>
+
+</div>
+<!-- <footer class="container-fluid">
+  <div align="center">Footer Text</divs>
+</footer>
+ --></body>
+</html>
+

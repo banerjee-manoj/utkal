@@ -1,0 +1,159 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+</head>
+
+<body>
+
+<!-- <br>
+Search Customer
+<hr> -->
+<br>
+<div ng-controller="searchCustomerController" >
+
+<fieldset class="scheduler-border col-sm-11" >
+
+    <legend class="scheduler-border">Search Customer</legend>
+        <div class="form-group">
+      <label class="control-label col-sm-2" for="customerName">Customer Name:</label>
+      <div class="col-sm-4">
+<!--       <select ng-change="onCustomerNameChange()"  style="height: 30px;"  id="customerName" class="form-control"  ng-model="names.key"  ng-options="key as value for (key,value) in names">
+      </select>
+ -->  
+ <input type="text" ng-model="selectedCustomer"  class="form-control"
+    uib-typeahead="customer.customerId as customer.customerName for customer in customers | 
+    filter:$viewValue | limitTo:8" 
+    typeahead-input-formatter="formatLabel($model)" >
+ 
+ 
+    </div>
+      <div class="col-sm-2">
+       <button type="button" ng-click="onCustomerNameChange()" class="customButton btn">Search</button>
+      </div>
+    
+    </div>
+  <!--    <br>
+      <div class="form-group">
+       <div class="col-sm-4">
+     <input type="text" class="form-control" name="names.value" id="names.key" ng-model="customerNameText" ng-keyup="complete(customerNameText)" />    
+    <ul class="list-group" ng-model="hidethis" ng-hide="hidethis">
+      <li class="list-group-item" ng-repeat="countryData in filterCountry" ng-click="fillTextBox(countryData)">{{countryData}}</li>
+    </ul>
+    </div>
+    </div>
+    <br>
+     <div class="form-group">
+       <div class="col-sm-4">
+    <pre>Model: {{selected| json}}</pre>
+    <input type="text" ng-model="selectedCustomer" 
+    uib-typeahead="customer.customerId as customer.customerName for customer in customers | 
+    filter:$viewValue | limitTo:8" 
+    typeahead-input-formatter="formatLabel($model)">
+     </div></div>  
+ -->
+  
+  
+  <div id="resultTable" class="col-sm-11" style="display: none">
+  <br><hr>
+<fieldset disabled id="editForm">
+  <form class="form-horizontal" ng-submit="updateCustomerDetails()">
+    <input type="hidden" ng-model="customer.customerId" value="{{customer.customerId}}">
+    <div class="form-group">
+      <label class="control-label col-sm-2" for="customerName">Customer Name:</label>
+      <div class="col-sm-2">
+        <input ng-required="true" type="text" class="form-control" id="customerName" placeholder="Enter Name" ng-model="customer.customerName">
+      </div>
+         <label class="control-label col-sm-2" for="mobileNumber">Mobile Number:</label>
+      <div class="col-sm-2">
+        <input ng-required="true" type="text" valid-number class="form-control" id="mobileNumber" placeholder="Mobile Number" ng-model="customer.mobileNumber">
+      </div>
+    </div>
+    
+    <div class="form-group">
+    <label class="control-label col-sm-2" for="address">Address:</label>
+    <div class="col-sm-8">
+    <input ng-required="true" type="text" class="form-control" id="address" placeholder="Address" ng-model="customer.address">
+    </div>
+    </div>
+    
+    <div class="form-group">
+    <label class="control-label col-sm-2" for="customerType">Customer Type:</label>
+      <div class="col-sm-2">
+       <select ng-change="onCustomerTypeChange()"  id="customerType" class="form-control"  ng-model="customer.customerType" style="height: 30px">
+       <!--   ng-options="key as value for (key,value) in customerType"> -->
+       <option  ng-required="true" ng-repeat="x in customerTypes" value="{{x.key}}">{{x.value}}</option>
+      </select>
+       <!--  <input type="text" class="form-control" id="customerType" placeholder="type" ng-model="customer.customerType"> -->
+      </div>    
+    <label class="control-label col-sm-2" for="securityDeposit">Security Deposit:</label>
+    <div class="col-sm-2">
+    <input ng-required="true" type="text" valid-number class="form-control" id="securityDeposit" placeholder="Security Deposit" ng-model="customer.securityDeposit">
+    </div>
+    </div>
+	 <div class="form-group">
+      <label class="control-label col-sm-2" for="normalJarRate">Normal Jar Rate:</label>
+      <div class="col-sm-2">
+        <input ng-required="true" type="text"  class="form-control" id="normalJarRate" placeholder="type" ng-model="customer.normalJarRate" valid-number>
+      </div>
+      <label class="control-label col-sm-2" for="coldJarRate">Cold Jar Rate:</label>
+      <div class="col-sm-2">
+        <input ng-required="true" type="text"  class="form-control" id="coldJarRate" placeholder="" ng-model="customer.coldJarRate" valid-number>
+      </div>
+    </div>
+    
+     <div class="form-group" id="dateDiv" style="display:block">
+      <label class="control-label col-sm-2" for="customerName">Start Date :</label>
+      <div class="col-sm-2">
+        <div style="margin-right: -7px;margin-left: -10px">
+       <p class="input-group" style="margin-top: 2px">
+          <input  type="text" class="form-control" uib-datepicker-popup="{{format}}" ng-model="customer.activationDate" 
+          is-open="popup1.opened" datepicker-options="dateOptions" ng-required="true" close-text="Close" style="width: 134px" />
+        <span class="input-group-btn">
+            <button type="button" class="customButton btn" ng-click="openCalender()" style="height: 25px;width: 35px"><i class="glyphicon glyphicon-calendar"></i></button>
+         </span> 
+        </p>
+      </div> 
+      </div> 
+    </div>
+    
+    <br>
+    
+    <div id="submitDiv" style="display: none">
+    <div class="form-group">
+       <div class="col-sm-offset-6 col-sm-3">
+        <button type="submit"  class="customButton btn">Submit</button>
+        <button type="button" ng-click="cancel()" class="customButton btn">Cancel</button>
+      </div>
+    </div>
+    </div>
+    
+    
+  </form>
+    <!-- disabled enabled field set -->
+  </fieldset>
+  
+   <div id="editButtonDiv" style="display: block">
+       <div class="form-group">
+       <div class="col-sm-offset-6 col-sm-2">
+       <button type="button" ng-click="enableEdit()" class="customButton btn">Edit</button>
+        <button type="button" ng-click="cancel()" class="customButton btn">Cancel</button>
+      </div>
+    </div>
+             
+    </div>
+    
+    
+    <!-- result table div -->
+</div>
+
+
+<!-- outer main fieldset -->
+</fieldset>  
+  
+  
+  <!-- controller div -->
+  </div>
+
+</body>
+</html>
