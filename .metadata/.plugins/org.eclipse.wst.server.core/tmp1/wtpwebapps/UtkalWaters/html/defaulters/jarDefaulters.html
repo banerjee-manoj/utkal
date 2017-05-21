@@ -1,0 +1,49 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+<title>Insert title here</title>
+</head>
+<body>
+<br>
+<div ng-controller="defaulterController" >
+<fieldset class="scheduler-border col-sm-11" >
+    <legend class="scheduler-border">Defaulter List</legend>
+
+<div class="container col-sm-11" >
+
+<button ng-click="getJarDefaulterList()" class="customButton btn">Get Defaulter List</button>
+<br>
+<hr>
+<br>
+
+  <div class="table-responsive" id="jarDefaulterTable" style="display: none">          
+   <table class="table  table-hover table-condensed table-bordered" id="defaulterTable">
+   <thead>
+      <tr >
+        <th style="text-align: center;">Customer Name</th>
+        <th style="text-align: center;">Normal Jar <br> Pending</th>
+        <th style="text-align: center;">Cold Jar <br> Pending</th>
+        <th style="text-align: center;">Container Pending</th>
+        <th style="text-align: center;">Payment Due</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr ng-repeat="jarDefaulter in jarDefaulters ">
+        <td style="color: #010110;">{{jarDefaulter.customerName | uppercase}}</td>
+        <td align="center" style="color: #010110;">{{jarDefaulter.prevNormalJarPending}}</td>
+        <td align="center" style="color: #010110;font-weight:bold;font-size: 15px;">{{jarDefaulter.prevColdJarPending}}</td>
+        <td align="center" style="color: #010110;font-weight: bold; font-size: 15px">{{jarDefaulter.prevContainerPending}}</td>
+        <td align="center" style="color: #010110;font-weight: bold; font-size: 15px">{{jarDefaulter.prevPaymentDue}}</td>
+      </tr>
+   </tbody>
+  </table>
+  </div>
+</div>
+
+    
+</fieldset>    
+    
+</div>
+</body>
+</html>

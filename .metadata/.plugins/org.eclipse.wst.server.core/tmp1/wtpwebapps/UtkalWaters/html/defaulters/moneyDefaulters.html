@@ -1,0 +1,45 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+</head>
+<body>
+<br>
+
+<div ng-controller="defaulterController" >
+<fieldset class="scheduler-border col-sm-11" >
+    <legend class="scheduler-border">Payment Defaulter</legend>
+
+
+<div class="container col-sm-11" >
+<button ng-click="getPaymentDefaulterList()" class="customButton btn">Get Payment Defaulter</button>
+<br>
+<hr>
+<br>
+  <div class="table-responsive" id="defaulterTable" style="display: none">          
+  <table class="table  table-hover table-condensed table-bordered">
+    <thead>
+      <tr >
+        <th style="text-align: center;">Customer Name</th>
+        <th style="text-align: center;">Mobile</th>
+        <th style="text-align: center;">Payment Due</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr ng-repeat="defaulter in defaulters | orderBy : 'paymentDue'">
+        <!-- <td>{{defaulter.customerId}}</td> -->
+        <td style="color: #010110;">{{defaulter.customerName | uppercase}}</td>
+        <td style="color: #010110;">{{defaulter.mobileNumber}}</td>
+        <td align="center" style="color: #010110;font-weight: bold; font-size: 15px">{{defaulter.paymentDue}}</td>
+      </tr>
+    </tbody>
+  </table>
+  </div>
+</div>
+
+    
+</fieldset>    
+    
+</div>
+</body>
+</html>
