@@ -28,7 +28,7 @@ public class DefaultersDaoImpl implements DefaultersDao {
 	public DataSource dataSource;
 	private JdbcTemplate jdbcTemplate;
 	public Connection conn;
-	private PaymentDefaulters paymentDefaulters;
+	//private PaymentDefaulters paymentDefaulters;
 	
 	public void setDataSource(DataSource dataSource) {
 		this.dataSource = dataSource;
@@ -97,7 +97,7 @@ public class DefaultersDaoImpl implements DefaultersDao {
 					return rs;
 				}});
            }catch (Exception e) {
-              logger.error("ERROR : Error Occured at getPrevDtlsByCustomer()");
+              logger.error("ERROR : Error Occured at getPrevDtlsByCustomer() "+e.getMessage());
            }
            logger.debug("END : getPrevDtlsByCustomer()");
 		return prevDtls;
