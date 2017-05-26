@@ -29,7 +29,7 @@ public class OrderHistoryMapper implements RowMapper<Order> {
 		
 		order.setContainerOrdered(Integer.parseInt(rs.getString("container_ordered")));
 		order.setContainerReturned(Integer.parseInt(rs.getString("container_returned")));
-		//order.setCustomerName(rs.getString("customer_name"));
+		order.setCustomerName(rs.getString("customer_name"));
 		
 		}catch(Exception ex){System.out.println("error "+ ex.getMessage());}
 		
