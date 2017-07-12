@@ -12,18 +12,17 @@ import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
-import javax.ws.rs.core.Response;
 
 import org.apache.log4j.Logger;
-import org.codehaus.jackson.map.ObjectMapper;
 import org.springframework.stereotype.Component;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.utkal.supply.customer.service.CustomerService;
 import com.utkal.supply.customer.service.DefaultersService;
 import com.utkal.supply.model.Customer;
  
 @Component
-@Path("/customer")
+@Path("/secured/customer")
 public class CustomerController {
 
 	
@@ -95,7 +94,6 @@ public class CustomerController {
 public String deleteCustomer(@PathParam("customerId") String customerId) throws Exception{
 	
 		logger.debug("START : deleteCustomer()");
-		System.out.println("customer to be deleted : "+customerId );
 		String message = customerService.deleteCustomer(customerId);
 		logger.debug("END : deleteCustomer()");
            ObjectMapper object = new ObjectMapper();
@@ -152,7 +150,6 @@ public String deleteCustomer(@PathParam("customerId") String customerId) throws 
 	@Produces({ MediaType.APPLICATION_JSON})
 	@Path("/customerDetails/{customerId}")
 	public Customer getCustomerDetails(@PathParam("customerId") String customerId){
-		System.out.println("customer Id is "+ customerId);
 		Customer customer = new Customer();
 		//CustomerService customerService = new CustomerServiceImpl();
 		customer = customerService.getCustomerDetails(customerId);

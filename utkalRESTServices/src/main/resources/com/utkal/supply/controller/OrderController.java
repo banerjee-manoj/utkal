@@ -3,23 +3,30 @@ package com.utkal.supply.controller;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.servlet.http.HttpServletResponse;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
+import javax.ws.rs.QueryParam;
+import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
 
 import org.apache.log4j.Logger;
 import org.springframework.stereotype.Component;
 
+import sun.security.util.PendingException;
+
 import com.utkal.supply.customer.service.OrderService;
 import com.utkal.supply.model.Order;
 import com.utkal.supply.model.OrderHistory;
+import com.utkal.supply.model.PreviousPendingDetails;
+import com.utkal.supply.model.TotalCounts;
 
 @Component
-@Path("/order")
+@Path("/secured/order")
 public class OrderController {
 
 	
@@ -80,7 +87,6 @@ public class OrderController {
 	@Path("/getOrderByDateAndCustomerId")
 	public Order getOrderDetailsByDateAndCustomerId(Order order){
 		logger.debug("BEGIN : getOrderDetailsByDateAndCustomerId()");
-		System.out.println(order.getCustomerId());
 		orderService.getCustomerOrderByDate(order);
 		logger.debug("END : getOrderDetailsByDateAndCustomerId()");
 		return order;
@@ -91,10 +97,16 @@ public class OrderController {
 	@POST
 	@Produces({MediaType.APPLICATION_JSON})
 	@Path("/updateOrder")
-	public Order updateOrder(Order order){
+	public Order updateOrder(Order order, @Context HttpServletResponse response){
+		
 		Order orderReturn = new Order();
 		logger.debug("BEGIN : updateOrder..");
+		try{
 		orderReturn = orderService.updateOrder(order);
+		}catch(Exception ex){
+			logger.error("ERROR:  Error Occured at updateOrder in the order controller : "+ ex.getMessage());
+			response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
+		}
 		logger.debug("END : updateOrder..");
 		
 		
@@ -119,14 +131,15 @@ public class OrderController {
 	@POST
 	@Produces({MediaType.APPLICATION_JSON})
 	@Path("/orderDetailsByDate")
-	public List<Order> getOrderDetailsByDate(OrderHistory orderHistory) throws Exception{
+	public TotalCounts getOrderDetailsByDate(OrderHistory orderHistory) throws Exception{
 		List<Order> orderReturn = new ArrayList<Order>();
+		TotalCounts totalCounts = new TotalCounts();
 		logger.debug("BEGIN : getOrderHistory..");
-		orderReturn=orderService.getOrderDetailsByDate(orderHistory);
+		totalCounts=orderService.getOrderDetailsByDate(orderHistory);
 		logger.debug("END : getOrderHistory..");
 		
 		
-		return orderReturn;
+		return totalCounts;
 	}
 	
 	

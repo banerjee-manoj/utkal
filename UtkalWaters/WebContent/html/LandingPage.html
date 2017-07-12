@@ -177,6 +177,18 @@
     </ul>
          </div>
          
+         <div uib-accordion-group  is-open="false" >
+         <uib-accordion-heading>
+            Manage User <i class=" glyphicon" ng-class="{'glyphicon-chevron-down': status.isCustomHeaderOpen, 'glyphicon-chevron-right': !status.isCustomHeaderOpen}"></i>
+         </uib-accordion-heading>
+          <ul class="">
+        <!-- <li><a ui-sref="newOrder" style="font-size: 13px">Manage Order</a></li> -->
+        <li><a ui-sref="createUser" style="font-size: 13px">Create User</a></li>
+         <li><a ui-sref="orderBilling" style="font-size: 13px">Update User</a></li>
+         <li><a ui-sref="jarDefaulters" style="font-size: 13px">Delete User</a></li>
+    </ul>
+         </div>
+         
          <!-- <div uib-accordion-group  is-open="false" >
          <uib-accordion-heading>
             Defaulter List <i class=" glyphicon" ng-class="{'glyphicon-chevron-down': status.isCustomHeaderOpen, 'glyphicon-chevron-right': !status.isCustomHeaderOpen}"></i>

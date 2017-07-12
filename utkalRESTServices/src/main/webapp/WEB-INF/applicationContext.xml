@@ -22,28 +22,46 @@
 	<!-- Scan class path to check for the spring base annotations -->
 
 
-	 <context:component-scan base-package="com.utkal.supply.controller.*"
-
+	 <context:component-scan base-package="com.utkal.supply.controller.*,com.utkal.supply.interceptors.*"
 		use-default-filters="false">
 		<context:include-filter expression="org.springframework.stereotype.Controller"
 			type="annotation" />
-
 		<context:include-filter expression="org.springframework.stereotype.Component"
 			type="annotation" />
 	</context:component-scan>
+	
+	 <context:component-scan base-package="com.utkal.supply.*" />
+	<context:annotation-config />
 
 
 	<context:annotation-config />
 
+<!--  transaction Management code goes here -->
+<!-- Enable Annotation based Declarative Transaction Management -->
+	<tx:annotation-driven proxy-target-class="true"
+		transaction-manager="transactionManager" />
+
+	<!-- Creating TransactionManager Bean, since JDBC we are creating of type 
+		DataSourceTransactionManager -->
+	<bean id="transactionManager"
+		class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
+		<property name="dataSource" ref="dataSource" />
+	</bean>
+	
+<!--  transaction Management code ends here -->	
+
 
   <bean id="dataSource" class="org.apache.commons.dbcp.BasicDataSource">
 		<property name="driverClassName" value="com.mysql.jdbc.Driver"></property>
-		<property name="url" value="jdbc:mysql://localhost:3306/utkal"></property>
+		<property name="url" value="jdbc:mysql://localhost:3306/utkalTest"></property>
 		<property name="username" value="root"></property>
 		<property name="password" value="root"></property>
 		<property name="validationQuery" value="SELECT 1"></property>
 		<property name="testOnBorrow" value="true"></property>
 	</bean>  
+<bean id="jdbcTemplate" class="org.springframework.jdbc.core.JdbcTemplate" scope="prototype">
+		<constructor-arg ref="dataSource" />
+	</bean>
 	
 	<!-- <bean id="dataSource" class="org.apache.commons.dbcp.BasicDataSource">
 		<property name="driverClassName" value="com.mysql.jdbc.Driver"></property>
@@ -75,6 +93,7 @@
 </bean>
 <bean id="orderService" class="com.utkal.supply.customer.service.OrderServiceImpl">
 <property name="orderDao" ref="orderDao"></property>
+<property name="defaulterService" ref="defaulterService"></property>
 </bean>
 <bean id="orderDao" class="com.utkal.supply.dao.OrderDaoImpl">
 <property name="dataSource" ref="dataSource"></property>

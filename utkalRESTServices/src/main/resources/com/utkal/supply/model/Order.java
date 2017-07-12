@@ -2,7 +2,7 @@ package com.utkal.supply.model;
 
 import javax.xml.bind.annotation.XmlRootElement;
 
-import org.codehaus.jackson.annotate.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 @JsonIgnoreProperties(ignoreUnknown=true)
 @XmlRootElement
@@ -33,6 +33,7 @@ public class Order {
 	private boolean isNewForm=true;
 	
 	
+	private PreviousPendingDetails prevDetails;
 	
 	
 	
@@ -41,6 +42,15 @@ public class Order {
 	
 	
 	
+	
+	
+	
+	public PreviousPendingDetails getPrevDetails() {
+		return prevDetails;
+	}
+	public void setPrevDetails(PreviousPendingDetails prevDetails) {
+		this.prevDetails = prevDetails;
+	}
 	public String getCustomerName() {
 		return customerName;
 	}

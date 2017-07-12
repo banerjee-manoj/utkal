@@ -9,13 +9,23 @@
   <url>http://maven.apache.org</url>
   
   
-  <properties>
+  <!--<properties>
 		<spring.version>4.1.1.RELEASE</spring.version>
 		<jstl.version>1.2</jstl.version>
 		<jdk.version>1.7</jdk.version>
 		<junit.version>4.11</junit.version>	
-  </properties>
+  </properties>-->
   
+   <properties>
+   <jersey.version>2.12</jersey.version>
+    <spring.version>4.1.1.RELEASE</spring.version>
+    <jersey.scope>compile</jersey.scope>
+    <compileSource>1.7</compileSource>
+    <maven.compiler.target>1.7</maven.compiler.target>
+    <maven.compiler.source>1.7</maven.compiler.source>
+    <junit.version>4.11</junit.version>	
+    <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+  </properties>
   
   <dependencies>
    <!-- Unit Test -->
@@ -25,6 +35,11 @@
 			<version>${junit.version}</version>
 			<scope>test</scope>
 		</dependency>	
+		<dependency>
+  <groupId>org.jmock</groupId>
+  <artifactId>jmock-junit4</artifactId>
+  <version>2.6.0</version>
+</dependency>
 		
 		<dependency>
 			<groupId>org.mockito</groupId>
@@ -115,7 +130,7 @@
   
   
   <!-- jersey related jars -->
-  <dependency>
+  <!-- <dependency>
 			<groupId>com.sun.jersey</groupId>
 			<artifactId>jersey-server</artifactId>
 			<version>1.8</version>
@@ -125,7 +140,7 @@
 			<groupId>com.sun.jersey</groupId>
 			<artifactId>jersey-json</artifactId>
 			<version>1.8</version>
-		</dependency>
+		</dependency> -->
   
   
   		<!-- MySQL Connector Jar -->
@@ -165,6 +180,55 @@
   
 
 		<!-- Jersey + Spring -->
+		
+  <!-- Jersey core Servlet 2.x implementation -->
+    <dependency>
+        <groupId>org.glassfish.jersey.containers</groupId>
+        <artifactId>jersey-container-servlet-core</artifactId>
+        <version>${jersey.version}</version>
+        <scope>${jersey.scope}</scope>
+    </dependency>
+ 
+    <!-- Jersey JSON Jackson (2.x) entity providers support module -->
+    <dependency>
+        <groupId>org.glassfish.jersey.media</groupId>
+        <artifactId>jersey-media-json-jackson</artifactId>
+        <version>${jersey.version}</version>
+        <scope>${jersey.scope}</scope>
+    </dependency>
+  
+  <!-- Jersey extension module providing support for Spring 3 integration -->
+    <dependency>
+        <groupId>org.glassfish.jersey.ext</groupId>
+        <artifactId>jersey-spring3</artifactId>
+        <version>${jersey.version}</version>
+        <scope>${jersey.scope}</scope>
+        <exclusions>
+            <exclusion>
+                <groupId>org.springframework</groupId>
+                <artifactId>spring-core</artifactId>
+            </exclusion>
+            <exclusion>
+                <groupId>org.springframework</groupId>
+                <artifactId>spring-web</artifactId>
+            </exclusion>
+            <exclusion>
+                <groupId>org.springframework</groupId>
+                <artifactId>spring-beans</artifactId>
+            </exclusion>
+        </exclusions>
+    </dependency>
+ 
+  <!-- EHCACHE dependency -->
+  <dependency>
+	<groupId>net.sf.ehcache</groupId>
+	<artifactId>ehcache</artifactId>
+	<version>2.9.0</version>
+</dependency>
+		
+		
+		
+		<!--
 		<dependency>
 			<groupId>com.sun.jersey.contribs</groupId>
 			<artifactId>jersey-spring</artifactId>
@@ -196,8 +260,30 @@
 				</exclusion>
   </exclusions>
   </dependency>
-		
+	-->	
 
+		  <!-- https://mvnrepository.com/artifact/io.jsonwebtoken/jjwt -->
+ <dependency>
+    <groupId>io.jsonwebtoken</groupId>
+    <artifactId>jjwt</artifactId>
+    <version>0.7.0</version>
+      <exclusions>
+            <exclusion>
+              <groupId>com.fasterxml.jackson.core</groupId>
+              <artifactId>jackson-databind</artifactId>
+            </exclusion>
+        </exclusions>
+</dependency>
+   <!-- https://mvnrepository.com/artifact/javax.servlet/servlet-api -->
+<dependency>
+    <groupId>javax.servlet</groupId>
+    <artifactId>servlet-api</artifactId>
+    <version>2.5</version>
+</dependency>
+
+		
+		
+		
 	<dependency>
     <groupId>log4j</groupId>
     <artifactId>log4j</artifactId>

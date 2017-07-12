@@ -83,9 +83,13 @@ utkalWaterHome.controller("searchCustomerController",function($scope,$http,$stat
 	$http({
 		method : 'GET',
 		url : hostname+'customer/customerListJson',
-		headers : {'Content-Type': 'application/json','Accept' :'application/json'},
+		headers : {'Content-Type': 'application/json','Accept' :'application/json','Authorization' :'Bearer ManojEncoded'},
 	}).success(function(data){
 		 $scope.customers=data;
+	}).error(function(data,status){
+		if(status == 401){
+			 $state.go('successMessage',{'message':'Unauthorized User ','value':''});
+		}
 	});
 	
 	$timeout(function(){$("#loadingMessage").hide();}, 1000); 

@@ -4,6 +4,7 @@ import java.util.List;
 
 import com.utkal.supply.model.Order;
 import com.utkal.supply.model.OrderHistory;
+import com.utkal.supply.model.TotalCounts;
 
 public interface OrderService {
 	
@@ -13,10 +14,10 @@ public interface OrderService {
 	
 	public Order getCustomerOrderByDate(Order order);
 	
-	public Order updateOrder(Order order);
+	public Order updateOrder(Order order) throws Exception;
 	
 	public List<Order> getOrderHistory(OrderHistory orderHistory);
 	
-	public List<Order> getOrderDetailsByDate(OrderHistory orderHistory);
+	public TotalCounts getOrderDetailsByDate(OrderHistory orderHistory);
 
 }

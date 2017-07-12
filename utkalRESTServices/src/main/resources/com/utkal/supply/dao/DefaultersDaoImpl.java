@@ -106,23 +106,34 @@ public class DefaultersDaoImpl implements DefaultersDao {
 
 	@Override
 	public PreviousPendingDetails savePrevDtls(PreviousPendingDetails prevDtls) {
+		System.out.println("Defaulters Dao Impl... in the savePrevDetails.");
 		logger.debug("BEGIN : savePrevDtls()");
 		String query;
 		int result=0;
+		System.out.println("Entry type for the pending table is "+ prevDtls.isNewForm());
 		try{
 			if(prevDtls.isNewForm()){
 				logger.debug("When the form is new form");
 				 query="insert into pending(customer_id,customer_name, normal_jar_pending,cold_jar_pending, container_pending,payment_due) values(?,?,?,?,?,?)";
-                 result = jdbcTemplate.update(query,prevDtls.getCustomerId(),prevDtls.getCustomerName(), prevDtls.getPrevNormalJarPending(),prevDtls.getPrevColdJarPending(),prevDtls.getPrevContainerPending(),
+                 
+				 System.out.println("Running Query for the PENDING Table is "+ query);
+				 System.out.println(prevDtls.toString());
+				 result = jdbcTemplate.update(query,prevDtls.getCustomerId(),prevDtls.getCustomerName(), prevDtls.getPrevNormalJarPending(),prevDtls.getPrevColdJarPending(),prevDtls.getPrevContainerPending(),
         		 prevDtls.getPrevPaymentDue());
+				 System.out.println("insert  completed");
+                 
 			}else{
 				logger.debug("When the form is Old form");
 				query="update pending set normal_jar_pending=?, cold_jar_pending=?, container_pending=?,payment_due=? where customer_id=?";
-	        	result = jdbcTemplate.update(query, prevDtls.getPrevNormalJarPending(),prevDtls.getPrevColdJarPending(),prevDtls.getPrevContainerPending(),
+				 System.out.println("Running Query for the PENDING Table is "+ query);
+				 System.out.println(prevDtls.toString());
+				 result = jdbcTemplate.update(query, prevDtls.getPrevNormalJarPending(),prevDtls.getPrevColdJarPending(),prevDtls.getPrevContainerPending(),
        			prevDtls.getPrevPaymentDue(),prevDtls.getCustomerId());	
+				 System.out.println("update completed");
 			}
-		
+		System.out.println("Result is  "+ result);
 		}catch(Exception ex){
+			System.out.println("Exception occured here... "+ex.getMessage());
 			logger.error("ERROR : Error occured at savePrevDtls method "+ ex.getMessage());
 			
 		}

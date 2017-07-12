@@ -137,7 +137,6 @@ public class CustomerServiceImpl implements CustomerService {
 			
 			//Delete the customer and set the message
 			String result = customerDao.deleteCustomerById(customerId);
-			System.out.println("Result in service Impl is "+ result);
 			Message= "Customer has been deleted.";
 				
 				

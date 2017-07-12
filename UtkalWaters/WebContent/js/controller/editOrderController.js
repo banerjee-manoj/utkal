@@ -86,8 +86,8 @@ $scope.getDetailsByCustomer = function(){
 		 });
 		 
 	 if($scope.customerName == ""){
-		 
 			alert("No Such Customer Exists.");
+			$('#editTableDiv').hide();
 		}else{
 			$('#editTableDiv').show();
 		}
@@ -144,6 +144,7 @@ $scope.getDetailsByCustomer = function(){
 	
 	$scope.editCustomerOrder = function(){
 		$("#loadingMessage").show();
+		$('#sbmt').prop('disabled',true);
 		$scope.calculateTotal();
 		$scope.prevDtls.customerId=$scope.order.customerId;		
 		$scope.prevDtls.prevColdJarPending=parseInt($scope.prevDtls.prevColdJarPending)+(parseInt($scope.order.coldWaterJarOrder)-parseInt($scope.coldWaterJarOrderServer)) - (parseInt($scope.order.coldWaterJarReturnedEmpty)-parseInt($scope.coldWaterJarReturnedEmptyServer)) - (parseInt($scope.order.coldWaterJarReturnedFilled)-parseInt($scope.coldWaterJarReturnedFilledServer));
@@ -151,11 +152,23 @@ $scope.getDetailsByCustomer = function(){
 		$scope.prevDtls.prevPaymentDue=parseInt($scope.prevDtls.prevPaymentDue)+(parseInt($scope.order.totalBill)-parseInt($scope.totalBillServer)) - (parseInt($scope.order.paymentRcvd)-parseInt($scope.paymentRcvdServer));
 		$scope.prevDtls.prevContainerPending=parseInt($scope.prevDtls.prevContainerPending)+(parseInt($scope.order.containerOrdered)-parseInt($scope.containerOrderedServer)) - (parseInt($scope.order.containerReturned)-parseInt($scope.containerReturnedServer));
 		$scope.prevDtls.customerName=$scope.selectedCustomerName;//$scope.names[$scope.names.key];
+		$scope.order.prevDetails=$scope.prevDtls;
 		
 		orderService.editCustomerOrder($scope.order).then(function(data){
 				  $scope.order = data.data;
+				  console.log(data.status);
 				  
-				   if(data.status == 200 && data.data.result ==1){
+				  if(data.status == 200 && data.data.result ==1){
+					   $timeout(function(){$("#loadingMessage").hide();}, 300);
+			           $state.go('successMessage',{'message':'Order has been completed for the Customer Id : ','value':data.data.customerId});
+				  }else{
+					  $timeout(function(){$("#loadingMessage").hide();}, 300);
+		               $state.go('successMessage',{'message':'Error Occured during creating the customer order ','value':''});
+	                  
+				  }
+				  
+				  
+				  /* if(data.status == 200 && data.data.result ==1){
 					        //save the pending records
 					   defaulterService.savePendingDetails($scope.prevDtls).then(function(data){
 						   if(data.status == 200){
@@ -172,7 +185,7 @@ $scope.getDetailsByCustomer = function(){
 				  }else {
 					  $timeout(function(){$("#loadingMessage").hide();}, 300);
 					  $state.go('successMessage',{'message':'Error Occured during creating the customer order ','value':''});
-				  }
+				  }*/
 				  
 			  });
 		 

@@ -15,7 +15,7 @@ import org.springframework.jdbc.core.ResultSetExtractor;
 
 import com.utkal.supply.model.Order;
 import com.utkal.supply.model.OrderHistory;
-import com.utkal.supply.utils.JarDefaulterMapper;
+import com.utkal.supply.model.PreviousPendingDetails;
 import com.utkal.supply.utils.OrderHistoryMapper;
 import com.utkal.supply.utils.UtkalApplicationUtility;
 
@@ -189,10 +189,53 @@ public class OrderDaoImpl implements OrderDao {
 	}
 
 	
+	boolean isNewOrder;
+	boolean isNewPrevOrder;
+	@Override
+	public boolean isNewOrder(Order order){
+		 isNewOrder=true;
+		 try{
+		String query="select * from jar where customer_id="+order.getCustomerId()+" and transaction_dt='"+UtkalApplicationUtility.getFormattedDate(order.getOrderDate())+"'";
+		ResultSet obj = (ResultSet) jdbcTemplate.query(query, new ResultSetExtractor<Object>(){
+			@Override
+			public Object extractData(ResultSet rs) throws SQLException,
+					DataAccessException {
+				while(rs.next()){
+					isNewOrder=false;
+				}
+				
+				return rs;
+			}
+			
+		});
+		
+	 }catch(Exception ex){
+		 logger.error(ex.getMessage());}
+		return isNewOrder;
+	}
+	
+	@Override
+	public boolean isNewPrevOrder(Order order){
+		isNewPrevOrder=true;
+		 try{
+		String query="select * from pending where customer_id="+order.getCustomerId()+" ";
+		ResultSet obj = (ResultSet) jdbcTemplate.query(query, new ResultSetExtractor<Object>(){
+			@Override
+			public Object extractData(ResultSet rs) throws SQLException,
+					DataAccessException {
+				while(rs.next()){
+					isNewPrevOrder=false;
+				}return rs;
+			}
+		});
+	 }catch(Exception ex){
+		 logger.error(ex.getMessage());}
+		return isNewPrevOrder;
+	}
 	
 	
 	
-	public Order updateOrder(Order order){
+	public Order updateOrder(Order order) throws Exception{
 		logger.debug("BEGIN : updateOrder()...");
 		String query;
 		int result=0;
@@ -203,21 +246,46 @@ public class OrderDaoImpl implements OrderDao {
 			query ="insert into jar(customer_id,transaction_dt,normal_jar_taken,cold_jar_taken,normal_jar_return_filled,normal_jar_return_empty," +
 					" cold_jar_return_filled,cold_jar_return_empty,container_ordered,container_returned,total_bill,payment_recvd) " +
 	  		"values(?,?,?,?,?,?,?,?,?,?,?,?)";
+	System.out.println("Running Query for the JAR Table is "+ query);
 			result = jdbcTemplate.update(query, new Object[]{order.getCustomerId(),UtkalApplicationUtility.getFormattedDate(order.getOrderDate()),order.getNormalWaterJarOrder(),order.getColdWaterJarOrder(),order.getNormalWaterJarReturnedFilled(),order.getNormalWaterJarReturnedEmpty(),
 					order.getColdWaterJarReturnedFilled(),order.getColdWaterJarReturnedEmpty(),order.getContainerOrdered(),order.getContainerReturned(),
 					order.getTotalBill(),order.getPaymentRcvd()});
+			
 		}else {
 			logger.debug("Update Data for the Existing form");
 			query="update jar set normal_jar_taken=?,cold_jar_taken=?,normal_jar_return_filled=?,normal_jar_return_empty=?,cold_jar_return_filled=?,cold_jar_return_empty=?" +
 					", container_ordered=?,container_returned=?,total_bill=?,payment_recvd=? where customer_id=? and transaction_dt=?";
+			System.out.println("Running Query for the JAR Table is "+ query);
 			result = jdbcTemplate.update(query, order.getNormalWaterJarOrder(),order.getColdWaterJarOrder(),order.getNormalWaterJarReturnedFilled(),order.getNormalWaterJarReturnedEmpty(),
 					order.getColdWaterJarReturnedFilled(),order.getColdWaterJarReturnedEmpty(), order.getContainerOrdered(),order.getContainerReturned(),
 					order.getTotalBill(),order.getPaymentRcvd(),order.getCustomerId(),UtkalApplicationUtility.getFormattedDate(order.getOrderDate()));
 		}
 		
+		
+		
+		logger.debug("Updated the jar table properly now moving to the save pending details table............");
+		
+		PreviousPendingDetails prevDtls = order.getPrevDetails();
+		if(prevDtls.isNewForm()){
+			logger.debug("When the form is new form");
+			 query="insert into pending(customer_id,customer_name, normal_jar_pending,cold_jar_pending, container_pending,payment_due) values(?,?,?,?,?,?)";
+			 result = jdbcTemplate.update(query,prevDtls.getCustomerId(),prevDtls.getCustomerName(), prevDtls.getPrevNormalJarPending(),prevDtls.getPrevColdJarPending(),prevDtls.getPrevContainerPending(),
+    		 prevDtls.getPrevPaymentDue());
+             
+		}else{
+			logger.debug("When the form is Old form");
+			query="update pending set normal_jar_pending=?, cold_jar_pending=?, container_pending=?,payment_due=? where customer_id=?";
+			 result = jdbcTemplate.update(query, prevDtls.getPrevNormalJarPending(),prevDtls.getPrevColdJarPending(),prevDtls.getPrevContainerPending(),
+   			prevDtls.getPrevPaymentDue(),prevDtls.getCustomerId());	
+		}
+		
+		logger.debug("Completed the code for the save pending details... .");
+		
 		}catch (Exception e) {
+			
             logger.error("ERORR : Error Occured at the updateOrder() "+ e.getMessage());
             result=0;
+            throw new Exception();
 		}
 		
 		logger.debug("END : updateOrder()...");
@@ -249,14 +317,11 @@ public class OrderDaoImpl implements OrderDao {
 						DataAccessException {
 					 while(rs.next()){
 
-					System.out.println( rs.getString("customer_id"));
 					orderReturn.setCustomerId(rs.getString("customer_id"));
 					orderReturn.setResult(1);
 					 }
 					return rs;
 				}});
-		System.out.println("Result Returned is "+ orderReturn.getCustomerId());
-		System.out.println("Return Result value is "+ orderReturn.getResult());
 */		}catch(Exception ex){
 	logger.error("ERROR  occured at getOrderHistory() "+ ex.getMessage());}
 logger.debug("END : getOrderHistory()");
@@ -307,8 +372,6 @@ logger.debug("END : getOrderHistory()");
 
 	
 
-	
-	
 	
 	
 	

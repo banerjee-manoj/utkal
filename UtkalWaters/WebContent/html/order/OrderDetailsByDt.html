@@ -56,22 +56,22 @@
    <thead>
       <tr >
         <th style="text-align: center; font-size: 12px">customer<br>Name</th>
-        <th style="text-align: center;font-size: 12px">Normal<br> Jar({{normalJarOrderedCount}})</th>
-        <th style="text-align: center;font-size: 12px">Normal<br>Jar Return({{normalJarReturnedEmptyCount}})</th>
-        <th style="text-align: center;font-size: 12px">Normal Filled<br>Jar Return({{normalJarReturnedFilledCount}})</th>
-        <th style="text-align: center;font-size: 12px">Cold<br>Jar({{coldJarOrderedCount}})</th>
-        <th style="text-align: center;font-size: 12px">Cold<br>Jar Return({{coldJarReturnedEmptyCount}})</th>
-        <th style="text-align: center;font-size: 12px">Cold Filled<br>Jar Return({{coldJarReturnedFilledCount}})</th>
-        <th style="text-align: center;font-size: 12px">Container<br>Ordered({{containerOrderedCount}})</th>
-        <th style="text-align: center;font-size: 12px">Container<br>Return({{containerReturnedCount}})</th>
-         <th style="text-align: center;font-size: 12px">Total Bill({{totalBillCount}})</th>
-         <th style="text-align: center;font-size: 12px">Payment({{paymentRecvdCount}})</th>
+        <th style="text-align: center;font-size: 12px">Normal<br>Jar<br>({{normalJarOrderedCount}})</th>
+        <th style="text-align: center;font-size: 12px">Normal<br>Jar<br>Return<br>({{normalJarReturnedEmptyCount}})</th>
+        <th style="text-align: center;font-size: 12px">Normal<br>Filled<br>Jar Return<br>({{normalJarReturnedFilledCount}})</th>
+        <th style="text-align: center;font-size: 12px">Cold<br>Jar<br>({{coldJarOrderedCount}})</th>
+        <th style="text-align: center;font-size: 12px">Cold<br>Jar<br>Return<br>({{coldJarReturnedEmptyCount}})</th>
+        <th style="text-align: center;font-size: 12px">Cold<br>Filled Jar<br>Return<br>({{coldJarReturnedFilledCount}})</th>
+        <th style="text-align: center;font-size: 12px">Container<br>Ordered<br>({{containerOrderedCount}})</th>
+        <th style="text-align: center;font-size: 12px">Container<br>Return<br>({{containerReturnedCount}})</th>
+         <th style="text-align: center;font-size: 12px">Total<br>Bill<br>({{totalBillCount}})</th>
+         <th style="text-align: center;font-size: 12px">Payment<br>({{paymentRecvdCount}})</th>
          
       </tr>
     </thead>
     <tbody>
-      <tr ng-repeat="order in orderHistory">
-        <td style="color: #010110;">{{order.customerName}}</td>
+      <tr ng-repeat="order in orderHistory.orderList | orderBy">
+        <td style="color: #010110;font-size: 12px">{{order.customerName}}</td>
         <td align="center" style="color: #010110;font-weight: bold; font-size: 15px">{{order.normalWaterJarOrder}}</td>
         <td align="center" style="color: #010110;font-weight: bold; font-size: 15px">{{order.normalWaterJarReturnedEmpty}}</td>
         <td align="center" style="color: #010110;font-weight: bold; font-size: 15px">{{order.normalWaterJarReturnedFilled}}</td>

@@ -2,7 +2,7 @@ package com.utkal.supply.model;
 
 import javax.xml.bind.annotation.XmlRootElement;
 
-import org.codehaus.jackson.annotate.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 
 @JsonIgnoreProperties(ignoreUnknown=true)
@@ -76,6 +76,12 @@ public class PreviousPendingDetails {
 	
 	
 	
-	
+	@Override
+	public String toString() {
+		return "customer Id : "+this.customerId+" ,Customer Name : "+this.customerName+" ,prev cold jar : " +
+		this.prevColdJarPending+ " ,prev container pending :"+this.prevContainerPending+
+		" ,prev Normal Jar :  "+ this.prevNormalJarPending+" ,prev payment :"
+		+this.prevPaymentDue;
+	}
 	
 }

@@ -19,6 +19,38 @@ utkalWaterHome.controller('homeController',function($scope,$http,$timeout){
 	
 $scope.login = function(){
 	
+	
+	//JWT login mechanism
+	
+	//$http.defaults.headers.common['Authorization'] = 'Basic ' + $scope.user.userName + ':' + $scope.user.password;
+	$http({
+		method : 'POST',
+		// crossDomain : true,
+		url : hostname+'login/login',
+		data:$scope.user,
+		headers : {'Content-Type': 'application/json','Accept' :'application/json'},
+	}).success(function(data,status,headers){
+		console.log(data.validUser);
+		if(data.validUser){
+			$scope.welcomeName=data.userName;
+			$("#loginDiv").hide();
+			$("#landingPageDiv").show();
+		}else {
+			$scope.message="Invalid User Name or Password";
+		}
+		 
+	});
+	
+	
+	//End of JWT login Mechanism
+	
+	
+	
+	
+	
+	
+	/*
+	
 	$("#loadingMessage").show();
 	$scope.user.userName="Admin";
 	$scope.user.password ='Admin'
@@ -34,7 +66,7 @@ $scope.login = function(){
 	
 
 	
-	
+*/	
 	
 /*	$http.defaults.headers.common['Authorization'] = 'Basic ' + $scope.user.userName + ':' + $scope.user.password;
 	$http({
@@ -174,6 +206,11 @@ utkalWaterHome.config(function($stateProvider, $urlRouterProvider) {
 	
 	 .state('deleteCustomerMessage',{
     	templateUrl :'./html/customer/showAllCustomer.html',
+    	
+    })
+    
+    .state('createUser',{
+    	templateUrl :'./html/userManagement/createUser.html',
     	
     })
        

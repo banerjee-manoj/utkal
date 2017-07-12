@@ -20,7 +20,7 @@ import com.utkal.supply.model.PreviousPendingDetails;
 
 
 @Component
-@Path("/defaulters")
+@Path("/secured/defaulters")
 public class DefaultersController {
 	
 public DefaultersService defaulterService;

@@ -17,10 +17,12 @@ public interface OrderDao {
 	
 	public Order getCustomerOrderByDate(Order order);
 	
-	public Order updateOrder(Order order);
+	public Order updateOrder(Order order) throws Exception;
 	
 	public List<Order>  getOrderHistory(OrderHistory orderHistory);
 	
 	public List<Order>  getOrderDetailsBydate(OrderHistory orderHistory);
-
+	
+	public boolean isNewOrder(Order order);
+	public boolean isNewPrevOrder(Order order);
 }

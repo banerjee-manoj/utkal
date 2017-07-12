@@ -48,7 +48,7 @@ public class CustomerDaoImpl implements CustomerDao{
             logger.debug(query);
             result =jdbcTemplate.update(query);
 		}catch(Exception ex){
-			System.out.println("Exception is "+ ex.getMessage());
+			logger.error("Exception is "+ ex.getMessage());
 		}
 		 logger.debug("END : saveCusomer()");
          return result;
@@ -64,7 +64,6 @@ public class CustomerDaoImpl implements CustomerDao{
 			Class.forName("com.mysql.jdbc.Driver");  
 			con=DriverManager.getConnection("jdbc:mysql://localhost:3306/utkal","root","root");  
 			}catch(Exception e){
-				System.out.println(e);
 				}  
 			
 	return con;
@@ -156,7 +155,6 @@ public class CustomerDaoImpl implements CustomerDao{
             logger.debug("Query to be executed is "+query);
             //boolean rs=stmt.execute(query);
            result = jdbcTemplate.update(query);
-            //System.out.println("Resutll is rs "+rs);
 		}catch(Exception ex){
 			logger.error("ERROR : Error occured at updateCustomer()  is "+ ex.getMessage());
 		}
@@ -223,15 +221,12 @@ public class CustomerDaoImpl implements CustomerDao{
 		             logger.debug("START :deleteCustomerById()");
 		String query = "delete from customer_details where customer_id= ?";
 	int row =jdbcTemplate.update(query,customerId);
-	 System.out.println(row+"  deleted.");
 	 if(row >0){
 		 int jarDeleteRows = jdbcTemplate.update("delete from jar where customer_id=?",customerId);
-		 System.out.println("Jar deleted rows "+ jarDeleteRows);
 		 result = "1";
 		   if(jarDeleteRows >0){
 			   
 			     int pendingDetailsRows = jdbcTemplate.update("delete from pending where customer_id=?",customerId);
-			     System.out.println("Pending Details rows "+ pendingDetailsRows);
 			     result = "2";
 		   }
 	 }

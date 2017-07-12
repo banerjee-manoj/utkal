@@ -16,7 +16,6 @@ public class UtkalApplicationUtility {
 	
 	public static String getFormattedDate(String date) throws Exception{
 		
-	System.out.println(UIDateFormat + "  and the date is "+ date);
 	SimpleDateFormat UIdateFormat = new SimpleDateFormat(UIDateFormat);
 	SimpleDateFormat DBdateFormat = new SimpleDateFormat(DBDateFormat);	
 	Date newDate = UIdateFormat.parse(date);
@@ -26,11 +25,9 @@ public class UtkalApplicationUtility {
 	/*Calendar cal = Calendar.getInstance();
 	cal.setTime(newDate);
 	cal.add(Calendar.DATE, 1);
-	System.out.println("**********  "+cal.getTime());
 	*/
 	
 	DateUtils.addDays(newDate, 1);
-	System.out.println("*****  Return date is "+ DBdateFormat.format(DateUtils.addDays(newDate, 1)));
 	
 	return DBdateFormat.format(DateUtils.addDays(newDate, 1));
 	}
@@ -48,7 +45,6 @@ public class UtkalApplicationUtility {
 	}
 	
 	/*public static  void main(String args[]) throws Exception{
-		System.out.println(getUIFormattedDate("2016-01-02"));
 	}
 	*/
 	
@@ -57,7 +53,6 @@ public class UtkalApplicationUtility {
 	
 	public static String getFormattedDateWithoutModification(String date) throws Exception{
 		
-		System.out.println(UIDateFormat + "  and the date is "+ date);
 		SimpleDateFormat UIdateFormat = new SimpleDateFormat(UIDateFormat);
 		SimpleDateFormat DBdateFormat = new SimpleDateFormat(DBDateFormat);	
 		Date newDate = UIdateFormat.parse(date);
@@ -67,13 +62,10 @@ public class UtkalApplicationUtility {
 		/*Calendar cal = Calendar.getInstance();
 		cal.setTime(newDate);
 		cal.add(Calendar.DATE, 1);
-		System.out.println("**********  "+cal.getTime());
 		*/
 		
 		/*DateUtils.addDays(newDate, 1);
-		System.out.println("*****  Return date is "+ DBdateFormat.format(DateUtils.addDays(newDate, 1)));
 		*/
-		System.out.println("****** "+DBdateFormat.format(newDate));
 		return DBdateFormat.format(newDate);
 		}
 

@@ -195,12 +195,11 @@ utkalWaterHome.controller('orderDetailsByDate',function($window,$scope,$uibModal
 		
 		
 		$scope.getOrderDetailsByDt = function(){
-						
+			$('#orderDetailsTable').DataTable().destroy();
 			if($scope.orderDetails.startDate != undefined && $scope.orderDetails.endDate != undefined){
 					$("#loadingMessage").show();
                orderHistoryService.getOrderDetailsByDate($scope.orderDetails).then(function(data){
 					 $scope.orderHistory=data.data;
-					 
 					 $scope.normalJarOrderedCount=0;
 					 $scope.coldJarOrderedCount=0;
                      $scope.normalJarReturnedFilledCount = 0;
@@ -210,9 +209,8 @@ utkalWaterHome.controller('orderDetailsByDate',function($window,$scope,$uibModal
                      $scope.containerOrderedCount=0;
                      $scope.containerReturnedCount=0;
                      $scope.totalBillCount=0;
-$scope.paymentRecvdCount=0;
-                     
- angular.forEach(data.data, function(item){
+                     $scope.paymentRecvdCount=0;
+/* angular.forEach(data.data, function(item){
    $scope.normalJarOrderedCount = $scope.normalJarOrderedCount+ parseInt(item.normalWaterJarOrder);
 $scope.normalJarReturnedFilledCount=$scope.normalJarReturnedFilledCount + parseInt(item.normalWaterJarReturnedFilled);
 $scope.normalJarReturnedEmptyCount=$scope.normalJarReturnedEmptyCount+ parseInt(item.normalWaterJarReturnedEmpty);
@@ -223,11 +221,24 @@ $scope.containerOrderedCount=$scope.containerOrderedCount + parseInt(item.contai
 $scope.containerReturnedCount=$scope.containerReturnedCount+parseInt(item.containerReturned);
 $scope.totalBillCount=$scope.totalBillCount+ parseInt(item.totalBill);
 $scope.paymentRecvdCount=$scope.paymentRecvdCount+parseInt(item.paymentRcvd);
-});
+});*/
+ 
+ $scope.normalJarOrderedCount=data.data.totalNormalJarOrdered;
+ $scope.normalJarReturnedEmptyCount=data.data.totalNormalJarReturnedEmpty;
+	 $scope.normalJarReturnedFilledCount=data.data.totalNormalJarReturnedFilled;
+		 
+		 $scope.coldJarOrderedCount=data.data.totalColdJarOrdered;
+			 $scope.coldJarReturnedEmptyCount=data.data.totalColdJarReturnedEmpty;
+				 $scope.coldJarReturnedFilledCount=data.data.totalColdJarReturnedFilled;
+					 
+					 $scope.containerOrderedCount=data.data.totalContainerOrdered;
+						 $scope.containerReturnedCount=data.data.totalContainerReturned;
+							 
+							 $scope.totalBillCount=data.data.totalBill;
+								 $scope.paymentRecvdCount=data.data.totalPayment;
 				   });
-		   
-			   $timeout(function(){//$('#orderDetailsTable').DataTable(); 
-			   $("#orderDetailsTableDiv").show();$("#loadingMessage").hide();}, 1000);
+			   $timeout(function(){$('#orderDetailsTable').DataTable(); 
+			   $("#orderDetailsTableDiv").show();$("#loadingMessage").hide();}, 2000);
 			}
 			
 		};
