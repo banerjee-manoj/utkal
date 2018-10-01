@@ -1,7 +1,6 @@
 package com.utkal.supply.controller;
 
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 
@@ -10,7 +9,6 @@ import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 
-import org.mockito.internal.util.collections.ArrayUtils;
 import org.springframework.stereotype.Component;
 
 @Component

@@ -18,7 +18,6 @@ import org.springframework.stereotype.Repository;
 //import bsh.org.objectweb.asm.Type;
 
 import com.utkal.supply.model.Customer;
-import com.utkal.supply.model.JarDefaulter;
 import com.utkal.supply.model.PreviousPendingDetails;
 import com.utkal.supply.utils.CustomerListMapper;
 import com.utkal.supply.utils.UtkalApplicationUtility;

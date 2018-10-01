@@ -18,7 +18,6 @@ public class Customer {
 	private String mobileNumber="";
 	private String customerType="";
 	private String activationDate="";
-	@JsonIgnore
 	private String securityDeposit="";
 	
 	

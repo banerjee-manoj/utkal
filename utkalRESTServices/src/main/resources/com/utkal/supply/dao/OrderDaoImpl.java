@@ -196,7 +196,7 @@ public class OrderDaoImpl implements OrderDao {
 		 isNewOrder=true;
 		 try{
 		String query="select * from jar where customer_id="+order.getCustomerId()+" and transaction_dt='"+UtkalApplicationUtility.getFormattedDate(order.getOrderDate())+"'";
-		ResultSet obj = (ResultSet) jdbcTemplate.query(query, new ResultSetExtractor<Object>(){
+		/*ResultSet obj = (ResultSet)*/ jdbcTemplate.query(query, new ResultSetExtractor<Object>(){
 			@Override
 			public Object extractData(ResultSet rs) throws SQLException,
 					DataAccessException {
@@ -219,7 +219,7 @@ public class OrderDaoImpl implements OrderDao {
 		isNewPrevOrder=true;
 		 try{
 		String query="select * from pending where customer_id="+order.getCustomerId()+" ";
-		ResultSet obj = (ResultSet) jdbcTemplate.query(query, new ResultSetExtractor<Object>(){
+		/*ResultSet obj = (ResultSet) */jdbcTemplate.query(query, new ResultSetExtractor<Object>(){
 			@Override
 			public Object extractData(ResultSet rs) throws SQLException,
 					DataAccessException {

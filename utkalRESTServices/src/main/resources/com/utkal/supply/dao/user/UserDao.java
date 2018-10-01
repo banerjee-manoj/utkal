@@ -3,6 +3,8 @@
  */
 package com.utkal.supply.dao.user;
 
+import java.sql.SQLException;
+
 import com.utkal.supply.model.User;
 
 /**
@@ -12,5 +14,7 @@ import com.utkal.supply.model.User;
 public interface UserDao {
 	
 	public void validateUser(User user);
+	
+	public String createUser(User user) throws SQLException;
 
 }

@@ -1,15 +1,15 @@
 var app = angular.module('printApp', []);
-     app.controller('printController', function ($http,$scope, $window,printService) {
+     app.controller('printController', function ($http,$scope,$rootScope, $window,printService) {
          $scope.customerId = $window.customerId;
 		 $scope.startDate = $window.startDate;
 		 $scope.endDate = $window.endDate;
 		 $scope.billDate= new Date();
-  
+		 $rootScope.AuthToken=$window.AuthToken;
 		 //get the customer basic details.
 		 $http({
 			method : 'GET',
 			url : hostname+'customer/customerDetails/'+$scope.customerId+'',
-			headers : {'Content-Type': 'application/json','Accept' :'application/json'},
+			headers : {'Content-Type': 'application/json','Accept' :'application/json','AuthToken' : $rootScope.AuthToken}
 		}).success(function(data){
 			$scope.customer=data;
 		});

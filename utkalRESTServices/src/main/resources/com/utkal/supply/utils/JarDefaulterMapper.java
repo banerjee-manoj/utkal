@@ -6,7 +6,6 @@ import java.sql.SQLException;
 import org.springframework.jdbc.core.RowMapper;
 
 import com.utkal.supply.model.JarDefaulter;
-import com.utkal.supply.model.PaymentDefaulters;
 
 public class JarDefaulterMapper implements RowMapper<JarDefaulter> {
 

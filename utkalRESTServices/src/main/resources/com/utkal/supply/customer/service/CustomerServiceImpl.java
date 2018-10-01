@@ -8,10 +8,8 @@ import java.util.Map;
 import org.apache.log4j.Logger;
 import org.springframework.stereotype.Service;
 
-import sun.security.util.PendingException;
 
 import com.utkal.supply.dao.CustomerDao;
-import com.utkal.supply.dao.CustomerDaoImpl;
 import com.utkal.supply.model.Customer;
 import com.utkal.supply.model.PreviousPendingDetails;
 

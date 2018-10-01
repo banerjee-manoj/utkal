@@ -10,19 +10,16 @@ import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
-import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
 
 import org.apache.log4j.Logger;
 import org.springframework.stereotype.Component;
 
-import sun.security.util.PendingException;
 
 import com.utkal.supply.customer.service.OrderService;
 import com.utkal.supply.model.Order;
 import com.utkal.supply.model.OrderHistory;
-import com.utkal.supply.model.PreviousPendingDetails;
 import com.utkal.supply.model.TotalCounts;
 
 @Component
@@ -132,7 +129,7 @@ public class OrderController {
 	@Produces({MediaType.APPLICATION_JSON})
 	@Path("/orderDetailsByDate")
 	public TotalCounts getOrderDetailsByDate(OrderHistory orderHistory) throws Exception{
-		List<Order> orderReturn = new ArrayList<Order>();
+		//List<Order> orderReturn = new ArrayList<Order>();
 		TotalCounts totalCounts = new TotalCounts();
 		logger.debug("BEGIN : getOrderHistory..");
 		totalCounts=orderService.getOrderDetailsByDate(orderHistory);

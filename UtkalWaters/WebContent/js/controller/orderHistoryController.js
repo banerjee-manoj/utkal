@@ -1,4 +1,4 @@
-utkalWaterHome.controller('orderHistoryController',function($window,$scope,$uibModal,$http,$state,$timeout,orderHistoryService,orderService){
+utkalWaterHome.controller('orderHistoryController',function($window,$scope,$rootScope,$uibModal,$http,$state,$timeout,orderHistoryService,orderService){
 	
 
 //populate the customer List
@@ -147,6 +147,7 @@ $scope.printInvoice = function () {
                 $popup.customerId = $scope.names.key;
 				$popup.startDate=$scope.orderHistoryObject.startDate;
 				$popup.endDate=$scope.orderHistoryObject.endDate;
+				$popup.AuthToken=$rootScope.getToken();
             };
 
 
@@ -199,6 +200,7 @@ utkalWaterHome.controller('orderDetailsByDate',function($window,$scope,$uibModal
 			if($scope.orderDetails.startDate != undefined && $scope.orderDetails.endDate != undefined){
 					$("#loadingMessage").show();
                orderHistoryService.getOrderDetailsByDate($scope.orderDetails).then(function(data){
+            	   console.log(data.data);
 					 $scope.orderHistory=data.data;
 					 $scope.normalJarOrderedCount=0;
 					 $scope.coldJarOrderedCount=0;

@@ -1,9 +1,10 @@
-utkalWaterHome.service('orderHistoryService',function($http){
+utkalWaterHome.service('orderHistoryService',function($http,$rootScope){
 	
 	
 	this.getOrderHistory= function(order){
 		
-		return  $http.post(hostname+'order/customerOrderHistory',order)
+		return  $http.post(hostname+'order/customerOrderHistory',order,
+				{headers : {'Content-Type': 'application/json','Accept' :'application/json','AuthToken' : $rootScope.getToken()}})
 	   .then(function success(response){
  
 	   return response;
@@ -22,7 +23,8 @@ utkalWaterHome.service('orderHistoryService',function($http){
 	this.getOrderDetailsByDate = function(order){
 		
 		
-		return  $http.post(hostname+'order/orderDetailsByDate',order)
+		return  $http.post(hostname+'order/orderDetailsByDate',order,
+	{headers : {'Content-Type': 'application/json','Accept' :'application/json','AuthToken' : $rootScope.getToken()}})
 	   .then(function success(response){
  
 	   return response;

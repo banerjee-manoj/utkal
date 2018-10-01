@@ -4,7 +4,7 @@ var utkalWaterHome=angular.module('utkal.waters.home', ['ui.bootstrap','ui.route
   
 
 
-utkalWaterHome.controller('homeController',function($scope,$http,$timeout){
+utkalWaterHome.controller('homeController',function($rootScope,$scope,$http,$timeout){
 	$scope.user={};
 	var isLoggedIn=false;
 	//call for the login validation. if the validation is done then show the main container,
@@ -17,6 +17,15 @@ utkalWaterHome.controller('homeController',function($scope,$http,$timeout){
 	$("#landingPageDiv").show();
 	}
 	
+	
+	$rootScope.setToken = function(token){
+		$rootScope.authToken=token;		
+	};
+	$rootScope.getToken = function(){
+		return $rootScope.authToken;		
+	};
+	
+	
 $scope.login = function(){
 	
 	
@@ -26,63 +35,69 @@ $scope.login = function(){
 	$http({
 		method : 'POST',
 		// crossDomain : true,
-		url : hostname+'login/login',
+		url : loginHostName+'login/login',
 		data:$scope.user,
 		headers : {'Content-Type': 'application/json','Accept' :'application/json'},
 	}).success(function(data,status,headers){
-		console.log(data.validUser);
+		token = headers('AuthToken');
+		$rootScope.setToken(token);
+		//function parseJwt (token) {
+           // var base64Url = token.split('.')[0];
+            //var base64 = base64Url.replace('-', '+').replace('_', '/');
+            //console.log(JSON.parse(window.atob(base64)));
+      //  };
+		
 		if(data.validUser){
 			$scope.welcomeName=data.userName;
 			$("#loginDiv").hide();
 			$("#landingPageDiv").show();
-		}else {
+		}else if(status==401){
 			$scope.message="Invalid User Name or Password";
 		}
 		 
+	}).error(function(data,status,headers){
+		if(status==401)
+			$scope.message="Invalid User Name or Password";
 	});
 	
 	
 	//End of JWT login Mechanism
-	
-	
-	
-	
-	
-	
-	/*
-	
-	$("#loadingMessage").show();
-	$scope.user.userName="Admin";
-	$scope.user.password ='Admin'
-	if($scope.user.userName == 'Admin' && $scope.user.password =='Admin'){
-		$scope.welcomeName=$scope.user.userName;
-	$("#loginDiv").hide();
-	$("#landingPageDiv").show();
-	$timeout(function(){$("#loadingMessage").hide();}, 300); ;
-	}else {
-		$scope.message="Invalid User Name or Password";
-		$timeout(function(){$("#loadingMessage").hide();}, 300); ;
-	}
-	
-
-	
-*/	
-	
-/*	$http.defaults.headers.common['Authorization'] = 'Basic ' + $scope.user.userName + ':' + $scope.user.password;
-	$http({
-		method : 'POST',
-		url : 'http://localhost:8080/RestSecurity/user/name/',
-		data:$scope.user,
-		headers : {'Content-Type': 'application/json','Accept' :'application/json'},
-	}).success(function(data){
-		 
-	});*/
-	
-	
 };
-	
-	
 });
+
+
+utkalWaterHome.factory("interceptors", [function($rootScope) {
+
+    return {
+
+        // if beforeSend is defined call it
+        'request': function(config) {
+        	console.log("**request Interceptor");
+        	console.log($rootScope.getToken());
+        	config.headers['AuthToken']=$rootScope.getToken();
+        	console.log(request);
+            /*if (request.beforeSend){
+            	console.log("11request Interceptor");
+                request.beforeSend();
+             console.log("22request Interceptor");
+             console.log(request);
+            }*/
+
+            return request;
+        },
+
+
+        // if complete is defined call it
+        'response': function(response) {
+
+            if (response.config.complete)
+                response.config.complete(response);
+
+            return response;
+        }
+    };
+
+}]);
 
 
 
@@ -126,8 +141,13 @@ utkalWaterHome.directive('validNumber', function() {
 
 
 // the below configuration is required for the URL routing of the applications.
-utkalWaterHome.config(function($stateProvider, $urlRouterProvider) {
+utkalWaterHome.config(function($stateProvider, $urlRouterProvider,$httpProvider) {
     
+	
+	 // Register interceptors service
+   // $httpProvider.interceptors.push('interceptors');
+	
+	
     $urlRouterProvider.otherwise('/');
     
     $stateProvider

@@ -44,7 +44,7 @@ utkalWaterHome.controller('addCustomerController',function($scope,$state,custome
 
 
 
-utkalWaterHome.controller("searchCustomerController",function($scope,$http,$state,$timeout,customerService){
+utkalWaterHome.controller("searchCustomerController",function($rootScope,$scope,$http,$state,$timeout,customerService){
 	
 	$scope.customer={};
 	$scope.selectedCustomer='';
@@ -83,7 +83,7 @@ utkalWaterHome.controller("searchCustomerController",function($scope,$http,$stat
 	$http({
 		method : 'GET',
 		url : hostname+'customer/customerListJson',
-		headers : {'Content-Type': 'application/json','Accept' :'application/json','Authorization' :'Bearer ManojEncoded'},
+		headers : {'Content-Type': 'application/json','Accept' :'application/json','AuthToken' : $rootScope.getToken()},
 	}).success(function(data){
 		 $scope.customers=data;
 	}).error(function(data,status){
@@ -146,7 +146,7 @@ utkalWaterHome.controller("searchCustomerController",function($scope,$http,$stat
 			method : 'GET',
 			//url : 'http://localhost:8080/utkalRESTServices/customer/customerDetails/'+key+'',
 			url : hostname+'customer/customerDetails/'+key+'',
-			headers : {'Content-Type': 'application/json','Accept' :'application/json'},
+			headers : {'Content-Type': 'application/json','Accept' :'application/json','AuthToken' : $rootScope.getToken()},
 		}).success(function(data){
 			$scope.customer=data;
 			$scope.customer.activationDate= new Date($scope.customer.activationDate);
@@ -222,13 +222,13 @@ alert('failed');
 	
 });
 
-utkalWaterHome.controller("showAllCustomerController",function($scope,$http,$state,$timeout,customerService){
+utkalWaterHome.controller("showAllCustomerController",function($scope,$rootScope,$http,$state,$timeout,customerService){
 	
 	$("#loadingMessage").show();
 	$http({
 		method : 'GET',
 		url : hostname+'customer/customerListJson',
-		headers : {'Content-Type': 'application/json','Accept' :'application/json'},
+		headers : {'Content-Type': 'application/json','Accept' :'application/json','AuthToken' : $rootScope.getToken()},
 	}).success(function(data){
 //		$scope.drawTheDataTable(data);
 		 $scope.customerList=data;
@@ -245,7 +245,7 @@ utkalWaterHome.controller("showAllCustomerController",function($scope,$http,$sta
 		$http({
 		method : 'GET',
 		url : hostname+'customer/deleteCustomer/'+customerId,
-		headers : {'Content-Type': 'application/json','Accept' :'application/json'},
+		headers : {'Content-Type': 'application/json','Accept' :'application/json','AuthToken' : $rootScope.getToken()},
 	}).success(function(data){
 					$timeout(function(){$("#loadingMessage").hide();}, 100);
 $state.go('deleteMessage',{'message': data,'value':''});

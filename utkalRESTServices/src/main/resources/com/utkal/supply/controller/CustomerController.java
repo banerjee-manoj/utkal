@@ -11,7 +11,9 @@ import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
+import javax.ws.rs.WebApplicationException;
 import javax.ws.rs.core.MediaType;
+import javax.ws.rs.core.Response.Status;
 
 import org.apache.log4j.Logger;
 import org.springframework.stereotype.Component;
@@ -59,8 +61,13 @@ public class CustomerController {
 	public Customer addNewCustomer(Customer customer){
 		logger.debug("BEGIN : addNewCustomer()");
 		logger.debug("Customer to be saved is "+ customer.getCustomerName());
+		try{
 	    int result =customerService.saveCustomer(customer);
 	   customer.setResult(result);
+		}catch(Exception ex){
+			logger.error("ERROR occured at .. due to "+ ex.getMessage());
+			throw new WebApplicationException(Status.INTERNAL_SERVER_ERROR);
+		}
 	   logger.debug("END : addNewCustomer()");
 	   return  customer;
 	}

@@ -156,8 +156,6 @@ $scope.getDetailsByCustomer = function(){
 		
 		orderService.editCustomerOrder($scope.order).then(function(data){
 				  $scope.order = data.data;
-				  console.log(data.status);
-				  
 				  if(data.status == 200 && data.data.result ==1){
 					   $timeout(function(){$("#loadingMessage").hide();}, 300);
 			           $state.go('successMessage',{'message':'Order has been completed for the Customer Id : ','value':data.data.customerId});

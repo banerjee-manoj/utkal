@@ -1,9 +1,10 @@
-utkalWaterHome.service('orderService',function($http){
+utkalWaterHome.service('orderService',function($http,$rootScope){
 	
 	
 	//Load the customer List in the combo box
 	this.loadCustomerList= function(){
-		return  $http.get(hostname+'customer/customerListJson')
+		return  $http.get(hostname+'customer/customerListJson',
+				{headers : {'Content-Type': 'application/json','Accept' :'application/json','AuthToken' : $rootScope.getToken()}})
 	   .then(function success(response){
  
 	   return response;
@@ -21,7 +22,8 @@ utkalWaterHome.service('orderService',function($http){
 	
 	//Load customer Details for the oder page
 	this.loadCustomerDetails= function(key){
-		return  $http.get(hostname+'customer/customerDetails/'+key)
+		return  $http.get(hostname+'customer/customerDetails/'+key,
+				{headers : {'Content-Type': 'application/json','Accept' :'application/json','AuthToken' : $rootScope.getToken()}})
 	   .then(function success(response){
 	   return response;
 	},
@@ -37,7 +39,8 @@ utkalWaterHome.service('orderService',function($http){
 		
 		this.getPaymentDetails = function(key){
 			
-			return $http.get(hostname+'order/customerPaymentDetails/'+key)
+			return $http.get(hostname+'order/customerPaymentDetails/'+key,
+					{headers : {'Content-Type': 'application/json','Accept' :'application/json','AuthToken' : $rootScope.getToken()}})
 			.then(function succes(response){
 				return response;
 			},
@@ -55,7 +58,8 @@ utkalWaterHome.service('orderService',function($http){
 		
 		this.newOrder = function(order){
 			
-			return $http.post(hostname+'order/newOrder',order)
+			return $http.post(hostname+'order/newOrder',order,
+					{headers : {'Content-Type': 'application/json','Accept' :'application/json','AuthToken' : $rootScope.getToken()}})
 			.then(function success(response){
 				return response;
 			},
@@ -70,7 +74,8 @@ utkalWaterHome.service('orderService',function($http){
 	// get the order details by customer id and order date:
 	
 	    this.getOrderDetailsByDateAndCustomerId = function(order){
-			return $http.post(hostname+'order/getOrderByDateAndCustomerId',order)
+			return $http.post(hostname+'order/getOrderByDateAndCustomerId',order,
+					{headers : {'Content-Type': 'application/json','Accept' :'application/json','AuthToken' : $rootScope.getToken()}})
 			.then(function success(response){
 				return response;
 			},
@@ -84,7 +89,8 @@ utkalWaterHome.service('orderService',function($http){
 		//update the order details ...
 		
 		this.editCustomerOrder = function(order){
-			return $http.post(hostname+'order/updateOrder',order)
+			return $http.post(hostname+'order/updateOrder',order,
+					{headers : {'Content-Type': 'application/json','Accept' :'application/json','AuthToken' : $rootScope.getToken()}})
 			.then(function success(response){
 				return response;
 			},
